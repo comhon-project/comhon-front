@@ -1,0 +1,16 @@
+.simple {
+    font-weight: bold;
+}
+
+.true {
+    color: #4CAF50;
+}
+
+.false {
+    color: red;
+}
+
+.null {
+  font-style: italic;
+  color: rgba(180, 180, 180);
+}

@@ -1,0 +1,13 @@
+.separator {
+    border-bottom:1px solid;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.complexList {
+    padding-left: 25px;
+}
+
+.simpleList {
+    padding-left: 25px;
+}

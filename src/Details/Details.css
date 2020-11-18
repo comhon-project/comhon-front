@@ -1,0 +1,34 @@
+.details {
+    padding-left: 25px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.value {
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.property {
+  padding-right: 10px;
+  color: rgba(100, 100, 100);
+}
+
+.foreign {
+    padding-left: 25px;
+    padding-right: 25px;
+    border-radius: 30px;
+}
+
+.clickable:hover {
+  box-shadow: 2px 2px 5px rgba(128, 128, 128);
+}
+
+.clickable {
+  box-shadow: 2px 2px 12px rgba(128, 128, 128);
+  cursor: pointer;
+}
+
+.inheritance {
+  color: #2977eb;
+}
