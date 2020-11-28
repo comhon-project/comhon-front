@@ -70,7 +70,7 @@ class ModelArray extends ModelContainer {
 	 */
 	constructor(model, isAssociative, elementName, arrayRestrictions = [], elementRestrictions = [], isNotNullElement = false, isIsolatedElement = false) {
 		if (model instanceof ModelForeign) {
-			throw new ArgumentException(model.constructor.name, ['ModelUnique', 'ModelArray'], 1);
+			throw new ArgumentException(model.getClassName(), ['ModelUnique', 'ModelArray'], 1);
 		}
 		super(model);
 		this.#isAssociative = isAssociative;
@@ -85,16 +85,25 @@ class ModelArray extends ModelContainer {
 		}
 		for (const arrayRestriction of this.#arrayRestrictions) {
 			if (!arrayRestriction.isAllowedModel(this)) {
-				throw new ComhonException('restriction doesn\'t allow specified model'+this.constructor.name);
+				throw new ComhonException('restriction doesn\'t allow specified model'+this.getClassName());
 			}
 		}
 		for (const elementRestriction of this.#elementRestrictions) {
 			if (!elementRestriction.isAllowedModel(this._getModel())) {
-				throw new ComhonException('restriction doesn\'t allow specified model'+this._getModel().constructor.name);
+				throw new ComhonException('restriction doesn\'t allow specified model'+this._getModel().getClassName());
 			}
 		}
 		Object.freeze(this.#arrayRestrictions);
 		Object.freeze(this.#elementRestrictions);
+	}
+
+	/**
+	 * get class name
+	 *
+	 * @returns {string}
+	 */
+	getClassName() {
+		return 'ModelArray';
 	}
 
 	/**

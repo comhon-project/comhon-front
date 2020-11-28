@@ -150,6 +150,15 @@ class Model extends ModelComplex {
 	}
 
 	/**
+	 * get class name
+	 *
+	 * @returns {string}
+	 */
+	getClassName() {
+		return 'Model';
+	}
+
+	/**
 	 * verify if model is loaded or not
 	 *
 	 * @returns {boolean}
@@ -1578,6 +1587,15 @@ class ModelRoot extends Model {
 	 constructor() {
 		 super('Comhon\\Root');
 	 }
+
+ 	/**
+ 	 * get class name
+ 	 *
+ 	 * @returns {string}
+ 	 */
+ 	getClassName() {
+ 		return 'ModelRoot';
+ 	}
 
 }
 

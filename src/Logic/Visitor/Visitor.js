@@ -31,7 +31,7 @@ class Visitor {
 
 	constructor() {
 		if (this.constructor === Visitor) {
-			throw new Error('can\'t instanciate abstract class ' + this.constructor.name);
+			throw new Error('can\'t instanciate abstract class Visitor');
 		}
 	}
 

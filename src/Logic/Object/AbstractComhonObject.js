@@ -66,13 +66,22 @@ class AbstractComhonObject {
 	 */
 	constructor(model) {
 		if (this.constructor === AbstractComhonObject) {
-			throw new Error('can\'t instanciate abstract class ' + this.constructor.name);
-		} else if (this.constructor.name === 'ComhonArray') {
+			throw new Error('can\'t instanciate abstract class AbstractComhonObject');
+		} else if (this.getClassName() === 'ComhonArray') {
 			this.#values = [];
 		}
 		this.#model = model;
 		this.#oid = AbstractComhonObject.#nextOid;
 		AbstractComhonObject.#nextOid++;
+	}
+
+	/**
+	 * get class name
+	 *
+	 * @abstract
+	 */
+	getClassName() {
+		throw new Error('function must be overridden in children class');
 	}
 
 	/**

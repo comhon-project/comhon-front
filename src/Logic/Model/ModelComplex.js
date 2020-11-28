@@ -25,7 +25,7 @@ class ModelComplex extends AbstractModel {
 	constructor() {
 		super();
 		if (this.constructor === ModelComplex) {
-			throw new Error('can\'t instanciate abstract class ' + this.constructor.name);
+			throw new Error('can\'t instanciate abstract class ModelComplex');
 		}
   }
 
@@ -89,13 +89,13 @@ class ModelComplex extends AbstractModel {
 			this.verifValue(object);
 			const objectCollectionInterfacer = new ObjectCollectionInterfacer();
 			const nullNodes = interfacer instanceof XMLInterfacer ? [] : null;
-			const isolate = forceIsolateElements && (object.constructor.name === 'ComhonArray');
+			const isolate = forceIsolateElements && (object.getClassName() === 'ComhonArray');
 			const oids = {};
 			const node = this._export(object, 'root', interfacer, true, objectCollectionInterfacer, nullNodes, oids, isolate);
 			// cannot use !(this instanceof ModelForeign)
 			// because ModelForeign import make this class loading fail
 			// certainly due to a kind of import loop
-			if (interfacer.hasToVerifyReferences() && (this.constructor.name !== 'ModelForeign')) {
+			if (interfacer.hasToVerifyReferences() && (this.getClassName() !== 'ModelForeign')) {
 				this._verifyReferences(object, objectCollectionInterfacer);
 			}
 			if (nullNodes !== null && nullNodes.length > 0) { // if not empty, interfacer must be xml interfacer
@@ -195,7 +195,7 @@ class ModelComplex extends AbstractModel {
 
  		const objectCollectionInterfacer = this._initObjectCollectionInterfacer(rootObject, mergeType);
 
- 		if (interfacer.getMergeType() === Interfacer.OVERWRITE || this.constructor.name === 'ModelArray') {
+ 		if (interfacer.getMergeType() === Interfacer.OVERWRITE || this.getClassName() === 'ModelArray') {
  			const isLoaded = rootObject.isLoaded();
  			rootObject.reset(false);
  			rootObject.setIsLoaded(isLoaded);

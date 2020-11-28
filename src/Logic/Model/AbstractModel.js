@@ -14,9 +14,18 @@ class AbstractModel {
 
 	constructor() {
 		if (this.constructor === AbstractModel) {
-			throw new Error('can\'t instanciate abstract class ' + this.constructor.name);
+			throw new Error('can\'t instanciate abstract class AbstractModel');
 		}
   }
+
+	/**
+	 * get class name
+	 *
+	 * @abstract
+	 */
+	getClassName() {
+		throw new Error('function must be overridden in children class');
+	}
 
 	/**
 	 * verify if model is loaded or not
@@ -39,7 +48,7 @@ class AbstractModel {
 
 	/**
 	 * load model
-	 * 
+	 *
 	 * @async
 	 * @returns {Promise<void>}
 	 */

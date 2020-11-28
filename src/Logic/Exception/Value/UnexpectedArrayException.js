@@ -28,11 +28,11 @@ class UnexpectedArrayException extends UnexpectedValueTypeException {
 		let message = '';
 		let part;
 		let objectModel = objectArray.getModel();
-		if (depth > 0 && objectArray.constructor.name === 'ComhonArray') {
+		if (depth > 0 && objectArray.getClassName() === 'ComhonArray') {
 			objectModel = objectModel.getModel(depth - 1);
 		}
 
-		if (objectModel.constructor.name !== 'ModelArray') {
+		if (objectModel.getClassName() !== 'ModelArray') {
 			message = `model must be a ModelArray, model '${objectModel.getName()}' given. `;
 		} else if (modelArray.isAssociative() !== objectModel.isAssociative()) {
 			part = modelArray.isAssociative() ? 'must be' : 'must not be';
@@ -45,9 +45,9 @@ class UnexpectedArrayException extends UnexpectedValueTypeException {
 		} else if (modelArray.isIsolatedElement() !== objectModel.isIsolatedElement()) {
 			part = modelArray.isNotNullElement() ? 'must be' : 'must not be';
 			message = `ModelArray ${part} isolated element. `;
-		} else if ((objectModel.getModel().constructor.name !== 'Model') || !UnexpectedArrayException._isInerited(objectModel, modelArray)) {
+		} else if ((objectModel.getModel().getClassName() !== 'Model') || !UnexpectedArrayException._isInerited(objectModel, modelArray)) {
 			const trustModelName = modelArray.getModelName();
-			const objectModelName = objectModel.getModel().constructor.name === 'ModelArray'
+			const objectModelName = objectModel.getModel().getClassName() === 'ModelArray'
 				? 'ModelArray' : `'${objectModel.getModel().getName()}'`;
 			message = `model must be a '${trustModelName}', model '${objectModelName}' given. `;
 		} else {
@@ -68,7 +68,7 @@ class UnexpectedArrayException extends UnexpectedValueTypeException {
 				}
 			}
 
-			message = `value ${objectArray.constructor.name} must have restrictions :\n`
+			message = `value ${objectArray.getClassName()} must have restrictions :\n`
 				+ expectedRestriction
 				+ "restrictions given : \n"
 				+ actualRestriction;

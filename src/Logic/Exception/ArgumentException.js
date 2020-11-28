@@ -26,7 +26,7 @@ class ArgumentException extends ComhonException {
 			// cannot use (argument instanceof AbstractComhonObject)
 			// because ObjectInterfacer import fails
 			// certainly due to a kind of import loop
-			if (argument.constructor.name === 'ComhonObject' || argument.constructor.name === 'ComhonArray') {
+			if (argument.getClassName() === 'ComhonObject' || argument.getClassName() === 'ComhonArray') {
 				type = argument.getComhonClass();
 			} else {
 				type = argument.constructor.name;

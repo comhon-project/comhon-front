@@ -319,7 +319,7 @@ class ManifestParser {
 	 */
 	constructor(manifest, isLocal, namespace) {
 		if (this.constructor === ManifestParser) {
-			throw new Error('can\'t instanciate abstract class ' + this.constructor.name);
+			throw new Error('can\'t instanciate abstract class ManifestParser');
 		}
 		this.#manifest = manifest;
 		this.#isLocal = isLocal;

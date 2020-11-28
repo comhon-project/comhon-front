@@ -26,6 +26,15 @@ class ModelForeign extends ModelContainer {
 	}
 
 	/**
+	 * get class name
+	 *
+	 * @returns {string}
+	 */
+	getClassName() {
+		return 'ModelForeign';
+	}
+
+	/**
 	 *
 	 * {@inheritDoc}
 	 * @see {AbstractModel}::_isNextLevelFirstLevel()

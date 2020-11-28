@@ -55,7 +55,7 @@ class ForeignProperty extends Property {
 	 * @see {Property}::getLiteralModel()
 	 */
 	async getLiteralModel() {
-		if (this._getModel()._getModel().constructor.name !== 'Model') {
+		if (this._getModel()._getModel().getClassName() !== 'Model') {
 			return null;
 		}
 		const foreignModel = await this._getModel().getModel();

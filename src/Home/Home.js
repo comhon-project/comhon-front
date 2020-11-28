@@ -1,7 +1,6 @@
 import React from 'react';
 import './Home.css';
 import Account from '../Account/Account';
-import DatetimePicker from '../DatetimePicker/DatetimePicker';
 
 class Home extends React.Component {
   constructor(props) {

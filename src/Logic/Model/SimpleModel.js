@@ -26,9 +26,18 @@ class SimpleModel extends AbstractModel {
 	constructor(modelName) {
 		super();
 		if (this.constructor === SimpleModel) {
-			throw new Error('can\'t instanciate abstract class ' + this.constructor.name);
+			throw new Error('can\'t instanciate abstract class SimpleModel');
 		}
 		this.#modelName = modelName;
+	}
+
+	/**
+	 * get class name
+	 *
+	 * @returns {string}
+	 */
+	getClassName() {
+		return this.#modelName;
 	}
 
 	/**

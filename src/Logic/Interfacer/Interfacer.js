@@ -131,7 +131,7 @@ class Interfacer {
 
 	constructor() {
 		if (this.constructor === Interfacer) {
-			throw new Error('can\'t instanciate abstract class ' + this.constructor.name);
+			throw new Error('can\'t instanciate abstract class Interfacer');
 		}
 	}
 

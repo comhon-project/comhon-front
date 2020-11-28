@@ -77,12 +77,12 @@ class Property {
 		this.#default = defaultValue;
 		this.#dependencies = dependencies;
 
-		if (this.#isIsolated && (model.constructor.name !== 'Model')) {
+		if (this.#isIsolated && (model.getClassName() !== 'Model')) {
 			throw new ComhonException('only property with model instance of "Model" may be isolated');
 		}
 		for (const restriction of restrictions) {
 			if (!restriction.isAllowedModel(this.#model)) {
-				throw new ComhonException('restriction doesn\'t allow specified model'+this.#model.constructor.name);
+				throw new ComhonException('restriction doesn\'t allow specified model'+this.#model.getClassName());
 			}
 			this.#restrictions.push(restriction);
 		}

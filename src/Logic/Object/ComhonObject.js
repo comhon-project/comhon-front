@@ -44,7 +44,7 @@ class ComhonObject extends AbstractComhonObject {
 		if (!(model instanceof Model)) {
 			throw new ComhonException('invalid model, ComhonObject must have instance of Model');
 		}
-		if (model.constructor.name === 'ModelRoot') {
+		if (model.getClassName() === 'ModelRoot') {
 			throw new ComhonException('invalid model, ComhonObject cannot have instance of ModelRoot');
 		}
 		if (!model.isLoaded()) {
@@ -56,6 +56,15 @@ class ComhonObject extends AbstractComhonObject {
 			this.setValue(property.getName(), property.getDefaultValue(), false);
 		}
 		this.setIsLoaded(isLoaded);
+	}
+
+	/**
+	 * get class name
+	 *
+	 * @returns {string}
+	 */
+	getClassName() {
+		return 'ComhonObject';
 	}
 
 		/***********************************************************************************************\

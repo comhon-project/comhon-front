@@ -38,8 +38,8 @@ class ObjectCollectionBuilder {
 			}
 			oids[hash] = null;
 
-			if (object.constructor.name === 'ComhonArray') {
-				if (object.getUniqueModel().constructor.name === 'Model') {
+			if (object.getClassName() === 'ComhonArray') {
+				if (object.getUniqueModel().getClassName() === 'Model') {
 					for (const [key, element] of object) {
 						if (object.issetValue(key)) {
 							stack.push([element, isForeign, add, object.getModel().isIsolatedElement()]);

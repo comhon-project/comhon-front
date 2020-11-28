@@ -32,7 +32,7 @@ class UnexpectedValueTypeException extends ComhonException {
 			// cannot use (value instanceof AbstractComhonObject)
 			// because ObjectInterfacer import fails
 			// certainly due to a kind of import loop
-			if (value.constructor.name === 'ComhonObject' || value.constructor.name === 'ComhonArray') {
+			if (value.getClassName() === 'ComhonObject' || value.getClassName() === 'ComhonArray') {
 				type = value.getComhonClass();
 			} else {
 				type = value.constructor.name;

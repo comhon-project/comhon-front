@@ -14,7 +14,7 @@ class Restriction {
 
 	constructor() {
 		if (this.constructor === Restriction) {
-			throw new Error('can\'t instanciate abstract class ' + this.constructor.name);
+			throw new Error('can\'t instanciate abstract class Restriction');
 		}
   }
 

@@ -46,6 +46,15 @@ class ComhonArray extends AbstractComhonObject {
 	}
 
 	/**
+	 * get class name
+	 *
+	 * @returns {string}
+	 */
+	getClassName() {
+		return 'ComhonArray';
+	}
+
+	/**
 	 * get unique contained model
 	 *
 	 * @returns {Model|SimpleModel}

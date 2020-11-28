@@ -13,26 +13,26 @@ class ComponentGenerator {
       valueModel = valueModel.getLoadedModel();
       isForeign = true;
     }
-    switch (valueModel.constructor.name) {
+    switch (valueModel.getClassName()) {
       case 'Model':
         return <Details object={value} componentModel={valueModel} isRoot={isRoot} isForeign={isForeign} isAggregation={isAggregation}/>;
       case 'ModelArray':
         return <List object={value} componentModel={valueModel} isRoot={isRoot} isForeign={isForeign} isAggregation={isAggregation}/>;
-      case 'ModelInteger':
-      case 'ModelIndex':
-      case 'ModelFloat':
-      case 'ModelString':
+      case 'integer':
+      case 'index':
+      case 'float':
+      case 'string':
         return <span className="simple">{value}</span>
-      case 'ModelPercentage':
+      case 'percentage':
         return <span className="simple">{(value * 100) + ' %'}</span>
-      case 'ModelDateTime':
+      case 'dateTime':
         return <span className="simple">{value.toLocaleDateString() + ' at ' + value.toLocaleTimeString()}</span>
-      case 'ModelBoolean':
+      case 'boolean':
         return value
           ? <span className="simple true">true</span>
           : <span className="simple false">false</span>
       default:
-        throw new Error('invalid model '+valueModel.constructor.name);
+        throw new Error('invalid model '+valueModel.getClassName());
     }
   }
 }

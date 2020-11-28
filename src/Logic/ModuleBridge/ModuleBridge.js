@@ -22,7 +22,7 @@ class ModuleBridge {
 	 * @param {ModelRoot} modelRootInstance
 	 */
 	registerModelRoot(modelRootInstance) {
-		if (modelRootInstance === null || typeof modelRootInstance !== 'object' || modelRootInstance.constructor.name !== 'ModelRoot') {
+		if (modelRootInstance === null || typeof modelRootInstance !== 'object' || modelRootInstance.getClassName() !== 'ModelRoot') {
 			throw new Error('invalid ModelRoot instance');
 		}
 	this.#modelRootInstance = modelRootInstance;

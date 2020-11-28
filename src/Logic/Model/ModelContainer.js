@@ -27,7 +27,7 @@ class ModelContainer extends ModelComplex {
 	constructor(model) {
     super();
 		if (this.constructor === ModelContainer) {
-			throw new Error('can\'t instanciate abstract class ' + this.constructor.name);
+			throw new Error('can\'t instanciate abstract class ModelContainer');
 		}
 		this.#model = model;
 	}
