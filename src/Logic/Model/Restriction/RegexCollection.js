@@ -8,7 +8,7 @@
  */
 
 import Regex from 'Logic/Model/Restriction/Regex';
-import Requester from 'Logic/Requester/Requester';
+import Requester from 'Logic/Requester/ComhonRequester';
 import HTTPException from 'Logic/Exception/HTTP/HTTPException';
 
 class RegexCollection {

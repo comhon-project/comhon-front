@@ -7,21 +7,37 @@
  * file that was distributed with this source code.
  */
 
-import ComhonConfig from 'Logic/Config/ComhonConfig';
 import UnknownServerException from 'Logic/Exception/HTTP/UnknownServerException';
 
 class Requester {
 
+  /**
+   * @type {string}
+   */
   #auth = null;
+
+  /**
+   * @type {string}
+   */
+  #basePath = '';
 
   /**
    * register authorisation header value that will be used
    * during request if useAuth is set to true.
    *
-   * @param {string} path a request URI or a suffix path.
+   * @param {string} auth authorization header value
    */
   registerAuth(auth) {
     this.#auth = auth;
+  }
+
+  /**
+   * register basePath that will be used
+   *
+   * @param {string} basePath a request URI or a suffix path.
+   */
+  registerBasePath(basePath) {
+    this.#basePath = basePath;
   }
 
   /**
@@ -112,9 +128,7 @@ class Requester {
    */
   async request(path, method, headers, body, queryParams, useAuth = true) {
     if (path.indexOf('http:') !== 0 && path.indexOf('https:') !== 0) {
-      if (ComhonConfig.hasBaseURI()) {
-        path = ComhonConfig.getBaseURI() + path;
-      }
+      path = this.#basePath + path;
     }
     return await new Promise((resolve, reject) => {
       var xhr = new XMLHttpRequest();
@@ -157,4 +171,4 @@ class Requester {
 
 }
 
-export default new Requester();
+export default Requester;

@@ -1,5 +1,5 @@
 import Cookie from '../Cookie/Cookie';
-import Requester from 'Logic/Requester/Requester';
+import Requester from 'Logic/Requester/ComhonRequester';
 
 class Account {
 

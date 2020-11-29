@@ -19,7 +19,7 @@ import HTTPException from 'Logic/Exception/HTTP/HTTPException';
 import AlreadyUsedModelNameException from 'Logic/Exception/Model/AlreadyUsedModelNameException';
 import NotSatisfiedRestrictionException from 'Logic/Exception/Value/NotSatisfiedRestrictionException';
 import ModuleBridge from 'Logic/ModuleBridge/ModuleBridge';
-import Requester from 'Logic/Requester/Requester';
+import Requester from 'Logic/Requester/ComhonRequester';
 
 class ModelManager {
 

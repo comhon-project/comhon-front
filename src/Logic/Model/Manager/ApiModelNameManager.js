@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import Requester from 'Logic/Requester/Requester';
+import Requester from 'Logic/Requester/ComhonRequester';
 import HTTPException from 'Logic/Exception/HTTP/HTTPException';
 
 class ApiModelNameManager {

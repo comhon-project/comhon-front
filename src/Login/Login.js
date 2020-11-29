@@ -27,7 +27,8 @@ class Login extends React.Component {
     data.set('username', this.state.username);
     data.set('password', this.state.password);
 
-    Requester.post('http://localhost:8000/api/login', null, data).then(xhr => {
+    const requester = new Requester();
+    requester.post('http://localhost:8000/api/login', null, data).then(xhr => {
       // update the state of the component with the result here
       if (xhr.status === 200) {
         Account.importToken( xhr.responseText, true);

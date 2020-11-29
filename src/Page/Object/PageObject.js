@@ -3,7 +3,7 @@ import './PageObject.css';
 import ModelArray from 'Logic/Model/ModelArray';
 import Model from 'Logic/Model/Model';
 import ObjectInterfacer from 'Logic/Interfacer/ObjectInterfacer';
-import Requester from 'Logic/Requester/Requester';
+import Requester from 'Logic/Requester/ComhonRequester';
 import ComponentGenerator from 'ComponentGenerator/ComponentGenerator';
 import Loading from 'Loading/Loading';
 import PageUtils from 'Page/Utils/PageUtils';

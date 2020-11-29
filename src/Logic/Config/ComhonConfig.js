@@ -7,35 +7,38 @@
  * file that was distributed with this source code.
  */
 
+import Requester from 'Logic/Requester/ComhonRequester';
+
 class ComhonConfig {
 
-  #baseURI = null;
+  #basePathURI = null;
 
 
   #tokenType = null;
 
   /**
    * @param {Object} config some configurations
-   * @param {string} config.baseURI the base URI used with ComhonRequest
+   * @param {string} config.basePathURI the base URI used with ComhonRequest
    */
   initialize(config) {
-    if (config.baseURI) {
-      this.#baseURI = config.baseURI;
+    if (config.basePathURI) {
+      this.#basePathURI = config.basePathURI;
+      Requester.registerBasePath(this.#basePathURI);
     }
   }
 
   /**
    * @return {boolean}
    */
-  hasBaseURI() {
-    return this.#baseURI !== null && this.#baseURI !== '';
+  hasbasePathURI() {
+    return this.#basePathURI !== null && this.#basePathURI !== '';
   }
 
   /**
    * @return {string|void}
    */
-  getBaseURI() {
-    return this.#baseURI;
+  getbasePathURI() {
+    return this.#basePathURI;
   }
 
 }

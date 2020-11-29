@@ -20,7 +20,7 @@ import ObjectInterfacer from 'Logic/Interfacer/ObjectInterfacer';
 import XMLInterfacer from 'Logic/Interfacer/XMLInterfacer';
 import ModelManager from 'Logic/Model/Manager/ModelManager';
 import ObjectFinder from 'Logic/Visitor/ObjectFinder';
-import Requester from 'Logic/Requester/Requester';
+import Requester from 'Logic/Requester/ComhonRequester';
 import ApiModelNameManager from 'Logic/Model/Manager/ApiModelNameManager';
 import ComhonException from 'Logic/Exception/ComhonException';
 import UnexpectedValueTypeException from 'Logic/Exception/Value/UnexpectedValueTypeException';

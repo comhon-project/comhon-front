@@ -14,7 +14,7 @@ import MainObjectCollection from 'Logic/Object/Collection/MainObjectCollection';
 import Model from 'Logic/Model/Model';
 import ModelComplex from 'Logic/Model/ModelComplex';
 import ApiModelNameManager from 'Logic/Model/Manager/ApiModelNameManager';
-import Requester from 'Logic/Requester/Requester';
+import Requester from 'Logic/Requester/ComhonRequester';
 import ObjectInterfacer from 'Logic/Interfacer/ObjectInterfacer';
 import ComhonException from 'Logic/Exception/ComhonException';
 import NotSatisfiedRestrictionException from 'Logic/Exception/Value/NotSatisfiedRestrictionException';

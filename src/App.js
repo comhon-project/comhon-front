@@ -31,7 +31,7 @@ class App extends React.Component {
 
   componentDidMount() {
     ComhonConfig.initialize({
-      baseURI : 'http://localhost:8000/api/comhon/'
+      basePathURI : 'http://localhost:8000/api/comhon/'
     });
 
     let token = Cookie.getCookie('token');
