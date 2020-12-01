@@ -144,8 +144,15 @@ class Requester {
           throw new Error('invalid parameter 5 (queryParams). it must be an object');
         }
         for (const name in queryParams) {
-          if (queryParams.hasOwnProperty(name)) {
-              params.push(`${name}=${queryParams[name]}`);
+          if (!queryParams.hasOwnProperty(name)) {
+            continue;
+          }
+          if (Array.isArray(queryParams[name])) {
+            for (const value of queryParams[name]) {
+              params.push(`${name}[]=${value}`);
+            }
+          } else {
+            params.push(`${name}=${queryParams[name]}`);
           }
         }
       }

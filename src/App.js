@@ -15,7 +15,6 @@ import ApiModelNameManager from 'Logic/Model/Manager/ApiModelNameManager';
 import ComhonConfig from 'Logic/Config/ComhonConfig';
 import ComhonException from 'Logic/Exception/ComhonException';
 import HTTPException from 'Logic/Exception/HTTP/HTTPException';
-// import ModelManager from 'Logic/Model/Manager/ModelManager';
 
 class App extends React.Component {
   constructor(props) {
@@ -60,41 +59,38 @@ class App extends React.Component {
     }
   }
 
-  initApp(islogged) {
-    return new Promise((resolve) => {
-      ApiModelNameManager.getApiModelNames(!islogged).then(models => {
-        this.setState({
-          models: models,
-          appInitialized: true,
-          logged: islogged
-        });
-        return resolve();
-      }).catch(error => {
-        if (error instanceof ComhonException) {
-          if (error instanceof HTTPException && error.getCode === 401 && !islogged) {
-            this.setState({
-              appInitialized: true,
-              logged: islogged
-            });
-          } else {
-            alert(error.getMessage());
-          }
-        } else {
-          alert('unknown error during application initialization');
-        }
-        return resolve();
+  async initApp(islogged) {
+    try {
+      const models = await ApiModelNameManager.getApiModelNames(!islogged);
+      this.setState({
+        models: models,
+        appInitialized: true,
+        logged: islogged
       });
-    });
+    } catch (error) {
+      if (error instanceof ComhonException) {
+        if (error instanceof HTTPException && error.getCode === 401 && !islogged) {
+          this.setState({
+            appInitialized: true,
+            logged: islogged
+          });
+        } else {
+          alert(error.getMessage());
+        }
+      } else {
+        console.log(error);
+        alert('unknown error during application initialization');
+      }
+    }
   }
 
-  handleLogin() {
-    this.initApp(true).then(() => {
-      if (this.props.location.pathname === '/login' || this.props.location.pathname === '/login/') {
-        this.props.history.push('/home');
-      } else {
-        $(document.getElementById('loginModal')).modal('hide');
-      }
-    });
+  async handleLogin() {
+    await this.initApp(true);
+    if (this.props.location.pathname === '/login' || this.props.location.pathname === '/login/') {
+      this.props.history.push('/home');
+    } else {
+      $(document.getElementById('loginModal')).modal('hide');
+    }
   }
 
   showLoginModal() {

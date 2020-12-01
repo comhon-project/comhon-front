@@ -9,7 +9,6 @@
 
 import Regex from 'Logic/Model/Restriction/Regex';
 import Requester from 'Logic/Requester/ComhonRequester';
-import HTTPException from 'Logic/Exception/HTTP/HTTPException';
 
 class RegexCollection {
 
@@ -30,15 +29,7 @@ class RegexCollection {
 			return this.#regexs.get(name);
 		}
 
-		const promise = Requester.get('pattern/'+name).then(xhr => {
-			if (xhr.status === 401) {
-				throw new HTTPException(xhr, `unauthorized to retrieve pattern '${name}'`);
-			}
-			if (xhr.status !== 200) {
-				throw new HTTPException(xhr, `error when trying to retrieve pattern '${name}'`);
-			}
-			return xhr.responseText;
-		});
+		const promise = Requester.getPattern(name);
 		const regex = new Regex(promise);
 		this.#regexs.set(name, regex);
 

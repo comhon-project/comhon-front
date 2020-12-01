@@ -13,9 +13,7 @@ import ComhonArray from 'Logic/Object/ComhonArray';
 import MainObjectCollection from 'Logic/Object/Collection/MainObjectCollection';
 import Model from 'Logic/Model/Model';
 import ModelComplex from 'Logic/Model/ModelComplex';
-import ApiModelNameManager from 'Logic/Model/Manager/ApiModelNameManager';
 import Requester from 'Logic/Requester/ComhonRequester';
-import ObjectInterfacer from 'Logic/Interfacer/ObjectInterfacer';
 import ComhonException from 'Logic/Exception/ComhonException';
 import NotSatisfiedRestrictionException from 'Logic/Exception/Value/NotSatisfiedRestrictionException';
 import UnexpectedArrayException from 'Logic/Exception/Value/UnexpectedArrayException';
@@ -26,7 +24,6 @@ import DependsValuesException from 'Logic/Exception/Object/DependsValuesExceptio
 import CastComhonObjectException from 'Logic/Exception/Model/CastComhonObjectException';
 import ArgumentException from 'Logic/Exception/ArgumentException';
 import AbstractObjectException from 'Logic/Exception/Object/AbstractObjectException';
-import HTTPException from 'Logic/Exception/HTTP/HTTPException';
 
 class ComhonObject extends AbstractComhonObject {
 
@@ -522,23 +519,13 @@ class ComhonObject extends AbstractComhonObject {
 	 * @param {string[]} propertiesFilter
 	 * @param {boolean} forceLoad if object already exists and is already loaded, force to reload object
 	 * @throws {ComhonException}
-	 * @returns {Promise<boolean>} true if success
+	 * @returns {Promise<boolean>} promise that return true if success
 	 */
 	async load(propertiesFilter = null, forceLoad = false) {
 		let success = false;
 		if (!this.isLoaded() || forceLoad) {
-			// TODO verify if model is requestable
-      let apiModelName = ApiModelNameManager.getApiModelName(this.getModel().getName());
-      apiModelName = apiModelName ?? this.getModel().getName();
-			const xhr = await Requester.get(apiModelName+'/'+this.getId());
-
-			if (xhr.status === 200) {
-        await this.fill(JSON.parse(xhr.responseText), new ObjectInterfacer());
-				success = true;
-      } else if (xhr.status !== 404) {
-        throw new HTTPException(xhr);
-      }
-		}
+			success = await Requester.loadObject(this, propertiesFilter);
+    }
 		return success;
 	}
 

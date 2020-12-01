@@ -2,14 +2,11 @@ import React from 'react';
 import './PageObject.css';
 import ModelArray from 'Logic/Model/ModelArray';
 import Model from 'Logic/Model/Model';
-import ObjectInterfacer from 'Logic/Interfacer/ObjectInterfacer';
 import Requester from 'Logic/Requester/ComhonRequester';
 import ComponentGenerator from 'ComponentGenerator/ComponentGenerator';
 import Loading from 'Loading/Loading';
 import PageUtils from 'Page/Utils/PageUtils';
-import ApiModelNameManager from 'Logic/Model/Manager/ApiModelNameManager';
 import ComhonException from 'Logic/Exception/ComhonException';
-import HTTPException from 'Logic/Exception/HTTP/HTTPException';
 
 class PageObject extends React.Component {
 
@@ -59,14 +56,7 @@ class PageObject extends React.Component {
   }
 
   async retrieveComhonArray() {
-    let apiModelName = ApiModelNameManager.getApiModelName(this.props.model.getLoadedModel().getName());
-    apiModelName = apiModelName ?? this.props.model.getName();
-		const xhr = await Requester.get(apiModelName);
-    if (xhr.status === 200) {
-      return await this.props.model.import(JSON.parse(xhr.responseText), new ObjectInterfacer());
-    } else {
-      throw new HTTPException(xhr);
-    }
+		return await Requester.loadObjects(this.props.model);
   }
 
   async retrieveComhonObject() {

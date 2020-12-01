@@ -21,7 +21,7 @@ class PageUtils {
       modelName = modelName ?? apiModelName;
       model = await ModelManager.getInstance().getInstanceModel(modelName);
       if (collection) {
-        model = new ModelArray(model);
+        model = new ModelArray(model, false, model.getShortName(), [], [], false, true);
       }
       return model;
     } catch (error) {
