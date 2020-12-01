@@ -48,7 +48,14 @@ class ComhonRequester extends Requester {
       const interfacer = InterfacerFactory.getInstance(xhr.getResponseHeader('Content-Type'));
       interfacer.setValidate(!Array.isArray(propertiesFilter));
       interfacer.setFlagValuesAsUpdated(false);
-      await object.fill(this._getParsedBodyWithInterfacer(xhr, interfacer), interfacer);
+      let interfacedObject = this._getParsedBodyWithInterfacer(xhr, interfacer);
+
+      // particular case for manifest, request may be redirected to
+      // a manifest file that contain manifest in local types
+      if (object.getModel().getName() === 'Comhon\\Manifest' && interfacer.getValue(interfacedObject, 'name') !== object.getId()) {
+        return false;
+      }
+      await object.fill(interfacedObject, interfacer);
       success = true;
     } else if (xhr.status !== 404) {
       throw new HTTPException(xhr);
