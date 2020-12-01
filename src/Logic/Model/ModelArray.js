@@ -505,8 +505,8 @@ class ModelArray extends ModelContainer {
 		return interfacer instanceof XMLInterfacer
 			? (
 					this.#isAssociative
-						? this.interfacer.nodeToObject(interfacedObject)
-						: this.interfacer.nodeToArray(interfacedObject)
+						? interfacer.nodeToObject(interfacedObject)
+						: interfacer.nodeToArray(interfacedObject)
 				)
 			: interfacedObject;
 	}

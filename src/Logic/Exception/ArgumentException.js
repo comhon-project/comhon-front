@@ -23,9 +23,7 @@ class ArgumentException extends ComhonException {
 		if (argument === null) {
 			type = null;
 		} else if (typeof argument === 'object') {
-			// cannot use (argument instanceof AbstractComhonObject)
-			// because ObjectInterfacer import fails
-			// certainly due to a kind of import loop
+			// cannot use (argument instanceof AbstractComhonObject) due to a kind of import loop
 			if (argument.getClassName() === 'ComhonObject' || argument.getClassName() === 'ComhonArray') {
 				type = argument.getComhonClass();
 			} else {

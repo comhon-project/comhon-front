@@ -21,7 +21,6 @@ import XMLInterfacer from 'Logic/Interfacer/XMLInterfacer';
 import ModelManager from 'Logic/Model/Manager/ModelManager';
 import ObjectFinder from 'Logic/Visitor/ObjectFinder';
 import Requester from 'Logic/Requester/ComhonRequester';
-import ApiModelNameManager from 'Logic/Model/Manager/ApiModelNameManager';
 import ComhonException from 'Logic/Exception/ComhonException';
 import UnexpectedValueTypeException from 'Logic/Exception/Value/UnexpectedValueTypeException';
 import ImportException from 'Logic/Exception/Interfacer/ImportException';
@@ -37,8 +36,6 @@ import ObjectLoopException from 'Logic/Exception/Interfacer/ObjectLoopException'
 import MissingIdForeignValueException from 'Logic/Exception/Value/MissingIdForeignValueException';
 import InvalidCompositeIdException from 'Logic/Exception/Value/InvalidCompositeIdException';
 import ArgumentException from 'Logic/Exception/ArgumentException';
-import UnknownServerException from 'Logic/Exception/HTTP/UnknownServerException';
-import HTTPException from 'Logic/Exception/HTTP/HTTPException';
 
 class Model extends ModelComplex {
 
@@ -762,62 +759,9 @@ class Model extends ModelComplex {
 	 */
 	async _loadOptions() {
 		if (!this.#isOptionsLoaded) {
-			const apiModelName = ApiModelNameManager.getApiModelName(this.#modelName) ?? this.#modelName;
-			try {
-				const xhr = await Requester.options(apiModelName);
-				if (xhr.status !== 200) {
-					throw new HTTPException(xhr);
-				}
-				if (xhr.responseText !== '') {
-					const objectInterfacer = new ObjectInterfacer();
-					const optionsModel = await ModelManager.getInstance().getInstanceModel('Comhon\\Options');
-					this.#options = await optionsModel.import(objectInterfacer.fromString(xhr.responseText), objectInterfacer);
-				} else {
-					// simulate unique request by puting a random id '1'
-					const unique = await Requester.options(apiModelName+'/1');
-					this.#options = this._initOptionsMethods(xhr.getResponseHeader('Allow'), unique.getResponseHeader('Allow'));
-				}
-				this.#isOptionsLoaded = true;
-			} catch (e) {
-				// UnknownServerException may happened due to CORS that block request OPTIONS
-				// that may return 404 (the exact error is not catchable)
-				// (if model does't exist or is not requestable, 404 is returned on OPTIONS request)
-				if (e instanceof UnknownServerException || (e instanceof HTTPException && e.getCode() === 404)) {
-					this.#options = this._initOptionsMethods(null, null);
-					this.#isOptionsLoaded = true;
-				} else {
-					throw e;
-				}
-			}
+			this.#options = await Requester.getModelOptions(this.#modelName);
+			this.#isOptionsLoaded = true;
 		}
-	}
-
-	/**
-	 * load options
-	 *
-	 * @async
-	 * @private
-	 * @returns {Promise<ComhonObject>}
-	 */
-	async _initOptionsMethods(collectionAllowHeader, uniqueAllowHeader) {
-		const collectionAllow = collectionAllowHeader === null ? [] : collectionAllowHeader.replace(/\s/g, '').split(',');
-		const uniqueAllow = uniqueAllowHeader === null ? [] : uniqueAllowHeader.replace(/\s/g, '').split(',');
-
-		const optionsModel = await ModelManager.getInstance().getInstanceModel('Comhon\\Options');
-		const options = optionsModel.getObjectInstance(true);
-		options.setValue('name', this.#modelName);
-		const collection = await options.initValue('collection');
-		const collectionAllowed = await collection.initValue('allowed_methods');
-		for (const allow of collectionAllow) {
-			collectionAllowed.pushValue(allow);
-		}
-		const unique = await options.initValue('unique');
-		const uniqueAllowed = await unique.initValue('allowed_methods');
-		for (const allow of uniqueAllow) {
-			uniqueAllowed.pushValue(allow);
-		}
-
-		return options;
 	}
 
 	/**

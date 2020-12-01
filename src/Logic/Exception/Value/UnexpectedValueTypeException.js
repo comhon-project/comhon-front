@@ -29,9 +29,7 @@ class UnexpectedValueTypeException extends ComhonException {
 		if (value === null) {
 			type = 'null';
 		} else if (typeof value === 'object') {
-			// cannot use (value instanceof AbstractComhonObject)
-			// because ObjectInterfacer import fails
-			// certainly due to a kind of import loop
+			// cannot use (value instanceof AbstractComhonObject) due to a kind of import loop
 			if (value.getClassName() === 'ComhonObject' || value.getClassName() === 'ComhonArray') {
 				type = value.getComhonClass();
 			} else {

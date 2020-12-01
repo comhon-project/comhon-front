@@ -15,7 +15,6 @@ import ManifestParserFactory from 'Logic/ManifestParser/ManifestParserFactory';
 import ObjectCollection from 'Logic/Object/Collection/ObjectCollection';
 import NotDefinedModelException from 'Logic/Exception/Model/NotDefinedModelException';
 import ComhonException from 'Logic/Exception/ComhonException';
-import HTTPException from 'Logic/Exception/HTTP/HTTPException';
 import AlreadyUsedModelNameException from 'Logic/Exception/Model/AlreadyUsedModelNameException';
 import NotSatisfiedRestrictionException from 'Logic/Exception/Value/NotSatisfiedRestrictionException';
 import ModuleBridge from 'Logic/ModuleBridge/ModuleBridge';
@@ -152,7 +151,10 @@ class ModelManager {
 	 * @returns {Model[]} models from local types
 	 */
 	async addManifestParser(model) {
-		const manifest = await this.getManifest(model.getName());
+		if (this.hasInstanceModelLoaded(model.getName())) {
+			throw new ComhonException(model.getName() + ' model already loaded');
+    }
+		const manifest = await Requester.getManifest(model.getName());
 		const interfacer = ManifestParser.getInterfacerInstance(manifest);
 		const fullyQualifiedName = interfacer.getValue(manifest, 'name');
 
@@ -171,29 +173,6 @@ class ModelManager {
 		mainModel.setManifestParser(manifestParser);
 		return this._instanciateLocalModels(localTypeManifestParsers);
 	}
-
-	/**
-	 * retrieve manifest from server according model name
-	 *
-	 * @async
-	 * @param {string} modelName
-	 * @returns {Object} retrieved manifest
-	 */
-  async getManifest(modelName) {
-    if (this.hasInstanceModelLoaded(modelName)) {
-			throw new ComhonException(modelName + ' model already loaded');
-    }
-		const xhr = await Requester.get('manifest/'+modelName);
-
-		if (xhr.status !== 200) {
-			throw new HTTPException(xhr);
-		}
-		const manifest = JSON.parse(xhr.responseText);
-		if (manifest === null || typeof manifest !== 'object') {
-			throw new ComhonException('invalid manifest from server response');
-		}
-		return manifest;
-  }
 
 	/**
 	 * add instance model.

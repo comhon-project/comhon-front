@@ -10,6 +10,7 @@
 import Interfacer from 'Logic/Interfacer/Interfacer';
 import ArgumentException from 'Logic/Exception/ArgumentException';
 import ComhonException from 'Logic/Exception/ComhonException';
+import CastStringException from 'Logic/Exception/Model/CastStringException';
 // import xmlFormat from 'xml-formatter'; 1 vulnerabilty when install this pakage
 
 const NS_XSI = 'xmlns:xsi';
@@ -491,6 +492,61 @@ class XMLInterfacer extends Interfacer {
 			throw new ComhonException('malformed node, should only contain one text');
 		}
 		return node.childNodes.item(0).nodeValue;
+	}
+
+	/**
+	 * cast value to integer and return it
+	 *
+	 * @param {*} value
+	 * @returns {integer}
+	 */
+	castValueToInteger(value) {
+		if (Number.isInteger(value)) {
+			return value;
+		}
+		if (isNaN(value)) {
+			throw new CastStringException(value, 'integer');
+		}
+		const castedValue = parseFloat(value);
+		if (!Number.isInteger(castedValue)) {
+			throw new CastStringException(value, 'integer');
+		}
+		return castedValue;
+	}
+
+	/**
+	 * cast value to float and return it
+	 *
+	 * @param {*} value
+	 * @returns {float}
+	 */
+	castValueToFloat(value) {
+		if (typeof value === 'number') {
+			return value;
+		}
+		if (isNaN(value)) {
+			throw new CastStringException(value, 'float');
+		}
+		return parseFloat(value);
+	}
+
+	/**
+	 * cast value to boolean and return it
+	 *
+	 * @param {*} value
+	 * @returns {boolean}
+	 */
+	castValueToBoolean(value) {
+		if (typeof value === 'boolean') {
+			return value;
+		}
+		if (value === '1') {
+			return true;
+		}
+		if (value === '0') {
+			return false;
+		}
+		throw new CastStringException(value, ['0', '1']);
 	}
 
 }
