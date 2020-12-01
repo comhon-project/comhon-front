@@ -898,7 +898,7 @@ class Model extends ModelComplex {
 		const node              = interfacer.createNode(nodeName);
 		const isPrivate         = interfacer.isPrivateContext();
 		const onlyUpdatedValues = isFirstLevel && interfacer.hasToExportOnlyUpdatedValues();
-		const propertiesFilter  = isFirstLevel ? interfacer.getPropertiesFilter() : null;
+		const propertiesFilter  = isFirstLevel ? this._getPropertiesFilter(object, interfacer) : null;
 		let originalCollection, exportedValue;
 
 		if (object.getOid() in oids) {
@@ -955,6 +955,24 @@ class Model extends ModelComplex {
 		}
 		oids[object.getOid()]--;
 		return node;
+	}
+
+	/**
+	 * @private
+	 * @param {ComhonObject} object
+	 * @param {Interfacer} interfacer
+	 * @returns {Array.string|NULL}
+	 */
+	_getPropertiesFilter(object, interfacer) {
+		const properties = interfacer.getPropertiesFilter();
+		if (properties === null) {
+			return properties;
+		}
+		// at least ids must be in filter properties
+		for (const property of object.getModel().getIdProperties()) {
+			properties.push(property.getName());
+		}
+		return properties;
 	}
 
 	/**

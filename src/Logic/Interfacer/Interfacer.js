@@ -106,7 +106,7 @@ class Interfacer {
 	#updatedValueOnly = false;
 
 	/** @type {string[]} */
-	#propertiesFilter = [];
+	#propertiesFilter = null;
 
 	/** @type {boolean} */
 	#flattenValues = false;
@@ -177,7 +177,7 @@ class Interfacer {
 	 * @returns {boolean} boolean
 	 */
 	hasPropertiesFilter() {
-		return this.#propertiesFilter.length > 0;
+		return Array.isArray(this.#propertiesFilter);
 	}
 
 	/**
@@ -186,22 +186,13 @@ class Interfacer {
 	 * @returns {array|void} return null if there is no filter
 	 */
 	getPropertiesFilter() {
-		return this.hasPropertiesFilter()
-			? this.#propertiesFilter
-			: null;
-	}
-
-	/**
-	 * reset properties filter
-	 */
-	resetPropertiesFilter() {
-		this.#propertiesFilter = [];
+		return this.#propertiesFilter;
 	}
 
 	/**
 	 * set properties filter for specified model
 	 *
-	 * @param {string[]} propertiesNames
+	 * @param {string[]|null} propertiesNames
 	 */
 	setPropertiesFilter(propertiesNames) {
 		this.#propertiesFilter = propertiesNames;
@@ -653,7 +644,7 @@ class Interfacer {
 
 		// preoperties filter
 		if (Interfacer.PROPERTIES_FILTER in preferences) {
-			if (!Array.isArray(preferences[Interfacer.PROPERTIES_FILTER])) {
+			if (!Array.isArray(preferences[Interfacer.PROPERTIES_FILTER]) && !preferences[Interfacer.PROPERTIES_FILTER] !== null) {
 				throw new UnexpectedValueTypeException(preferences[Interfacer.PROPERTIES_FILTER], 'array', Interfacer.PROPERTIES_FILTER);
 			}
 			this.setPropertiesFilter(Interfacer.PROPERTIES_FILTER);
