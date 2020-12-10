@@ -90,6 +90,7 @@ class AbstractModel {
 	/**
 	 * export value in specified format according interfacer
 	 *
+	 * @async
 	 * @abstract
 	 * @param {*} value
 	 * @param {string} nodeName
@@ -102,7 +103,7 @@ class AbstractModel {
 	 * @throws {ComhonException}
 	 * @returns {*}
 	 */
-	_export(value, nodeName, interfacer, isFirstLevel, objectCollectionInterfacer, nullNodes, oids, isolate = false) {
+	async _export(value, nodeName, interfacer, isFirstLevel, objectCollectionInterfacer, nullNodes, oids, isolate = false) {
 		throw new Error('function must be overridden in children class');
 	}
 

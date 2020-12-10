@@ -782,6 +782,37 @@ class Model extends ModelComplex {
 	}
 
 	/**
+	 * verify if model is requestable.
+	 *
+	 * @async
+	 * @param {boolean} collection if true, verify if model is requestable for collection route
+	 *                             if false, verify if model is requestable for unique route
+	 */
+	async isRequestable(collection = false) {
+		let isRequestable = true;
+		const options = await this.getOptions();
+		const valueName = collection ? 'collection' : 'unique';
+		const allowedMethods = options.issetValue(valueName) && options.getValue(valueName).issetValue('allowed_methods')
+			? options.getValue(valueName).getValue('allowed_methods')
+			: null;
+
+		// if options don't have allowed_methods value set that means
+		// the server has returned a body without allowed_methods (but perhaps with some other usefull values)
+		// in this case by default all methods are allowed (so GET is allowed) and model is requestable
+
+		if (allowedMethods !== null) {
+			isRequestable = false;
+			for (const keyAndValue of allowedMethods) {
+				if (keyAndValue[1] === 'GET') {
+					isRequestable = true;
+					break;
+				}
+			}
+		}
+		return isRequestable;
+	}
+
+	/**
 	 * encode multiple ids in json format
 	 *
 	 * @param {array} idValues
@@ -883,7 +914,7 @@ class Model extends ModelComplex {
 	 * {@inheritDoc}
 	 * @see {AbstractModel}::_export()
 	 */
-	_export(object, nodeName, interfacer, isFirstLevel, objectCollectionInterfacer, nullNodes, oids, isolate = false) {
+	async _export(object, nodeName, interfacer, isFirstLevel, objectCollectionInterfacer, nullNodes, oids, isolate = false) {
 		/** @var {ComhonObject} object */
 		if (object === null) {
 			return null;
@@ -935,7 +966,7 @@ class Model extends ModelComplex {
 						exportedValue = interfacer.createNode(propertyName);
 						nullNodes.push(exportedValue);
 					} else {
-						exportedValue = property.getLoadedModel()._export(value, propertyName, interfacer, false, objectCollectionInterfacer, nullNodes, oids, property.isIsolated());
+						exportedValue = await property.getLoadedModel()._export(value, propertyName, interfacer, false, objectCollectionInterfacer, nullNodes, oids, property.isIsolated());
 					}
 					interfacer.setValue(node, exportedValue, propertyName, property.isInterfacedAsNodeXml());
 				}
@@ -948,7 +979,7 @@ class Model extends ModelComplex {
 		}
 		if (isolate) {
 			if (interfacer.hasToVerifyReferences()) {
-				this._verifyReferences(object, objectCollectionInterfacer);
+				await this._verifyReferences(object, objectCollectionInterfacer);
 			}
 			objectCollectionInterfacer = originalCollection;
 			objectCollectionInterfacer.addObject(object, false);
@@ -1235,7 +1266,7 @@ class Model extends ModelComplex {
 		await this._fillObject(object, interfacedObject, interfacer, isFirstLevel, objectCollectionInterfacer);
 		if (isolate) {
 			if (interfacer.hasToVerifyReferences()) {
-				this._verifyReferences(object, objectCollectionInterfacer);
+				await this._verifyReferences(object, objectCollectionInterfacer);
 			}
 		}
 		return object;

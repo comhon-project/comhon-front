@@ -138,14 +138,15 @@ class ObjectCollectionInterfacer {
 	 * get objects in newForeignObjectCollection that are not referenced in newObjectCollection.
 	 * if object has a main model, it is not taken in account.
 	 *
+	 * @async
 	 * @returns  {ComhonObject[]}
 	 */
-	getNotReferencedObjects() {
+	async getNotReferencedObjects() {
 		const notReferencedObjects = [];
 
 		for (const modelNameAndObjects of this.#newForeignObjectCollection.getMap()) {
 			for (const [id, object] of modelNameAndObjects[1]) {
-				if (!object.getModel().isMain() && !this.#newObjectCollection.hasObject(id, object.getModel())) {
+				if (!this.#newObjectCollection.hasObject(id, object.getModel()) && !object.getModel().isMain() && await !object.getModel().isRequestable()) {
 					notReferencedObjects.push(object);
 				}
 			}

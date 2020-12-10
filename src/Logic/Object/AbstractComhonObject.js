@@ -602,12 +602,13 @@ class AbstractComhonObject {
 	/**
 	 * export comhon object according specified interfacer
 	 *
+	 * @async
 	 * @param {Interfacer} interfacer
 	 * @returns {ComhonObject|ComhonArray}
 	 */
-	export(interfacer) {
+	async export(interfacer) {
 		try {
-			return this.#model.export(this, interfacer);
+			return await this.#model.export(this, interfacer);
 		} catch (e) {
 			throw new ExportException(e);
 		}
@@ -641,15 +642,16 @@ class AbstractComhonObject {
 	/**
 	 * stringify object
 	 *
+	 * @async
 	 * @returns {string}
 	 */
-	toString() {
+	async stringify() {
 		try {
 			const interfacer = new ObjectInterfacer();
 			interfacer.setPrivateContext(true);
 			interfacer.setVerifyReferences(false);
 			interfacer.setValidate(false);
-			return JSON.stringify(interfacer.export(this), null, 2) + "\n";
+			return JSON.stringify(await interfacer.export(this), null, 2) + "\n";
 		} catch (e) {
 			console.log('object can\'t be stringified because it is invalid : ' + e.getMessage());
 		}

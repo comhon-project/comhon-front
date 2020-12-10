@@ -7,10 +7,12 @@
  * file that was distributed with this source code.
  */
 
+import ComhonArray from 'Logic/Object/ComhonArray';
+import AbstractComhonObject from 'Logic/Object/AbstractComhonObject';
 import ComhonException from 'Logic/Exception/ComhonException';
 import ParameterException from 'Logic/Exception/Visitor/ParameterException';
 import VisitException from 'Logic/Exception/Visitor/VisitException';
-import ComhonArray from 'Logic/Object/ComhonArray';
+import ArgumentException from 'Logic/Exception/ArgumentException';
 
 /**
  * @abstract
@@ -43,6 +45,9 @@ class Visitor {
 	 * @returns {*}
 	 */
 	execute(object, params = {}) {
+		if (!(object instanceof AbstractComhonObject)) {
+			throw new ArgumentException(object, 'AbstractComhonObject', 1);
+		}
 		this._verifParameters(params);
 		this.#oids = {};
 		this.#propertyNameStack = [];

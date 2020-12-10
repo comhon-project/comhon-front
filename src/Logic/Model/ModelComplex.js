@@ -40,12 +40,13 @@ class ModelComplex extends AbstractModel {
 
 	/**
 	 *
+	 * @async
 	 * @param {ComhonObject} object
 	 * @param {ObjectCollectionInterfacer} objectCollectionInterfacer
 	 * @throws {ComhonException}
 	 */
-	_verifyReferences(object, objectCollectionInterfacer) {
-		const objects = objectCollectionInterfacer.getNotReferencedObjects();
+	async _verifyReferences(object, objectCollectionInterfacer) {
+		const objects = await objectCollectionInterfacer.getNotReferencedObjects();
 		if (objects.length > 0) {
 			const ObjectFinder = ModuleBridge.getObjectFinder();
 			if (ObjectFinder === null) {
@@ -77,6 +78,7 @@ class ModelComplex extends AbstractModel {
 	/**
 	 * export comhon object in specified format
 	 *
+	 * @async
 	 * @param {AbstractComhonObject} object
 	 * @param {Interfacer} interfacer
 	 * @param {boolean} forceIsolateElements this parameter is only use if exported object is a comhon array.
@@ -84,19 +86,19 @@ class ModelComplex extends AbstractModel {
 	 *                (isolated element doesn't share objects instances with others elements).
 	 * @returns {*}
 	 */
-	export(object, interfacer, forceIsolateElements = true) {
+	async export(object, interfacer, forceIsolateElements = true) {
 		try {
 			this.verifValue(object);
 			const objectCollectionInterfacer = new ObjectCollectionInterfacer();
 			const nullNodes = interfacer instanceof XMLInterfacer ? [] : null;
 			const isolate = forceIsolateElements && (object.getClassName() === 'ComhonArray');
 			const oids = {};
-			const node = this._export(object, 'root', interfacer, true, objectCollectionInterfacer, nullNodes, oids, isolate);
+			const node = await this._export(object, 'root', interfacer, true, objectCollectionInterfacer, nullNodes, oids, isolate);
 			// cannot use !(this instanceof ModelForeign)
 			// because ModelForeign import make this class loading fail
 			// certainly due to a kind of import loop
 			if (interfacer.hasToVerifyReferences() && (this.getClassName() !== 'ModelForeign')) {
-				this._verifyReferences(object, objectCollectionInterfacer);
+				await this._verifyReferences(object, objectCollectionInterfacer);
 			}
 			if (nullNodes !== null && nullNodes.length > 0) { // if not empty, interfacer must be xml interfacer
 				this._processNullNodes(interfacer, node, nullNodes);
@@ -210,7 +212,7 @@ class ModelComplex extends AbstractModel {
  		);
 
  		if (interfacer.hasToVerifyReferences()) {
- 			this._verifyReferences(rootObject, objectCollectionInterfacer);
+ 			await this._verifyReferences(rootObject, objectCollectionInterfacer);
  		}
 
  		return rootObject;

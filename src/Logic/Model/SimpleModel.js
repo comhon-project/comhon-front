@@ -81,7 +81,7 @@ class SimpleModel extends AbstractModel {
 	 * {@inheritDoc}
 	 * @see {AbstractModel}::_export()
 	 */
-	_export(value, nodeName, interfacer, isFirstLevel, objectCollectionInterfacer, nullNodes, oids, isolate = false) {
+	async _export(value, nodeName, interfacer, isFirstLevel, objectCollectionInterfacer, nullNodes, oids, isolate = false) {
 		return this.exportSimple(value, interfacer);
 	}
 

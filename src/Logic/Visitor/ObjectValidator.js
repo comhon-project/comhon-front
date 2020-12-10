@@ -48,7 +48,7 @@ class ObjectValidator extends Visitor {
 	 * @see {Visitor}::_getMandatoryParameters()
 	 */
 	_getMandatoryParameters() {
-		return {};
+		return [];
 	}
 
 	/**
@@ -61,7 +61,9 @@ class ObjectValidator extends Visitor {
 		object.validate();
 		if (this.#verifRef) {
 			this.#collection = new ObjectCollectionInterfacer();
-			this.#collection.addObject(object, false);
+			if (object instanceof ComhonObject) {
+				this.#collection.addObject(object, false);
+			}
 		}
 	}
 
@@ -95,26 +97,32 @@ class ObjectValidator extends Visitor {
 	 * @see {Visitor}::_finalize()
 	 */
 	_finalize(object) {
-		if (this.#verifRef) {
-			const objects = this.#collection.getNotReferencedObjects();
-			if (objects.length > 0) {
-				const objectFinder = new ObjectFinder();
-				for (const obj of objects) {
-					const statck = objectFinder.execute(
-						object,
-						{
-							[ObjectFinder.ID] : obj.getId(),
-							[ObjectFinder.MODEL] : obj.getModel(),
-							[ObjectFinder.SEARCH_FOREIGN] : true
+		return new Promise((resolve, reject) => {
+			if (this.#verifRef) {
+				return this.#collection.getNotReferencedObjects().then(objects => {
+					if (objects.length > 0) {
+						const objectFinder = new ObjectFinder();
+						for (const obj of objects) {
+							const statck = objectFinder.execute(
+								object,
+								{
+									[ObjectFinder.ID] : obj.getId(),
+									[ObjectFinder.MODEL] : obj.getModel(),
+									[ObjectFinder.SEARCH_FOREIGN] : true
+								}
+							);
+							if (statck === null) {
+								reject(new ComhonException('value should not be null'));
+							}
+							reject(new VisitException(new NotReferencedValueException(obj), statck));
 						}
-					);
-					if (statck === null) {
-						throw new ComhonException('value should not be null');
 					}
-					throw new VisitException(new NotReferencedValueException(obj), statck);
-				}
+					return resolve();
+				});
+			} else {
+				return resolve();
 			}
-		}
+		});
 	}
 }
 

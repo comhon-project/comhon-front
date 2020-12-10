@@ -35,7 +35,7 @@ class ArgumentException extends ComhonException {
 
 		expected = Array.isArray(expected)
 			? 'be one of ' + JSON.stringify(expected)
-			: `"be a ${expected}` + (Array.isArray(enumeration) ? (" that belong to " + JSON.stringify(enumeration)) : '');
+			: `be a ${expected}` + (Array.isArray(enumeration) ? (" that belong to " + JSON.stringify(enumeration)) : '');
 
 		const value = Array.isArray(enumeration) && ((typeof argument === 'string') || (typeof argument === 'number')) ? ` '${argument}' ` : ' ' ;
 

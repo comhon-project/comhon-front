@@ -201,7 +201,7 @@ class ModelArray extends ModelContainer {
 	 *                         this parameter may by true only if the exported root object is an array
 	 *                         and if the parameter forceIsolateElements is set to true.
 	 */
-	_export(objectArray, nodeName, interfacer, isFirstLevel, objectCollectionInterfacer, nullNodes, oids, isolate = false) {
+	async _export(objectArray, nodeName, interfacer, isFirstLevel, objectCollectionInterfacer, nullNodes, oids, isolate = false) {
 		/** @var {ComhonArray} objectArray */
 		if (objectArray === null) {
 			return null;
@@ -220,7 +220,7 @@ class ModelArray extends ModelContainer {
 					exportedValue = interfacer.createNode(this.#elementName);
 					nullNodes.push(exportedValue);
 				} else {
-					exportedValue = this.getLoadedModel()._export(value, this.#elementName, interfacer, isFirstLevel, objectCollectionInterfacer, nullNodes, oids, isolate);
+					exportedValue = await this.getLoadedModel()._export(value, this.#elementName, interfacer, isFirstLevel, objectCollectionInterfacer, nullNodes, oids, isolate);
 				}
 				if (this.#isAssociative) {
 					interfacer.addAssociativeValue(nodeArray, exportedValue, key, this.#elementName);

@@ -587,14 +587,15 @@ class Interfacer {
 	/**
 	 * export given comhon object to interfaced object
 	 *
+	 * @async
 	 * @param {AbstractComhonObject} object
 	 * @param {array} preferences
 	 * @returns {*}
 	 */
-	export(object, preferences = {}) {
+	async export(object, preferences = {}) {
 		this.setPreferences(preferences);
 		try {
-			return object.export(this);
+			return await object.export(this);
 		} catch (e) {
 			throw new ExportException(e);
 		}

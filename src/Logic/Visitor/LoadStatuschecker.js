@@ -32,7 +32,7 @@ class LoadStatuschecker extends Visitor {
 	 * @see {Visitor}::_getMandatoryParameters()
 	 */
 	_getMandatoryParameters() {
-		return {};
+		return [];
 	}
 
 	/**

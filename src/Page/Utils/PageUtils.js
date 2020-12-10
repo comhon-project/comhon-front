@@ -38,24 +38,9 @@ class PageUtils {
    * @param {Model|ModelArray} model
    */
   async isRequestable(model) {
-    let isRequestable = false;
-    const uniqueModel = model instanceof ModelArray
-      ? model.getLoadedModel() : model;
-    const options = await uniqueModel.getOptions();
-    const valueName = model instanceof ModelArray ? 'collection' : 'unique';
-    const allowedMethods = options.issetValue(valueName) && options.getValue(valueName).issetValue('allowed_methods')
-      ? options.getValue(valueName).getValue('allowed_methods')
-      : null;
+    const uniqueModel = model instanceof ModelArray ? model.getLoadedModel() : model;
 
-    if (allowedMethods !== null) {
-      for (const keyAndValue of allowedMethods) {
-        if (keyAndValue[1] === 'GET') {
-          isRequestable = true;
-          break;
-        }
-      }
-    }
-    return isRequestable;
+    return await uniqueModel.isRequestable(model instanceof ModelArray);
   }
 
   /**

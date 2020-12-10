@@ -59,7 +59,7 @@ class ModelForeign extends ModelContainer {
 	 * {@inheritDoc}
 	 * @see {ModelContainer}::_export()
 	 */
-	_export(object, nodeName, interfacer, isFirstLevel, objectCollectionInterfacer, nullNodes, oids, isolate = false) {
+	async _export(object, nodeName, interfacer, isFirstLevel, objectCollectionInterfacer, nullNodes, oids, isolate = false) {
 		if (object === null) {
 			return null;
 		}
