@@ -8,7 +8,7 @@
  */
 
 import Requester from 'Logic/Requester/Requester';
-import ApiModelNameManager from 'Logic/Model/Manager/ApiModelNameManager';
+import ComhonConfig from 'Logic/Config/ComhonConfig';
 import InterfacerFactory from 'Logic/Interfacer/InterfacerFactory';
 import ModelArray from 'Logic/Model/ModelArray';
 import Model from 'Logic/Model/Model';
@@ -32,13 +32,20 @@ class ComhonRequester extends Requester {
   async loadObject(object, propertiesFilter = null) {
 		let success = false;
     if (!object.getModel().hasIdProperties()) {
-			throw new ComhonException('Cannot load model without id into file');
+			throw new ComhonException('Cannot load object with a model without id');
 		}
 		if (!object.hasCompleteId()) {
 			throw new ComhonException('Cannot load object, object id is not complete');
-		}
-    let apiModelName = ApiModelNameManager.getApiModelName(object.getModel().getName());
-    apiModelName = apiModelName ?? object.getModel().getName();
+    }
+    const apiModelName = ComhonConfig.hasApiModelNameHandler() 
+      ? ComhonConfig.getApiModelNameHandler().getApiModelName(object.getModel().getName())
+      : object.getModel().getName();
+    // if getApiModelName return null value that means model is not requestable and can't be loaded
+    if (apiModelName === null) {
+			throw new ComhonException(
+        `Cannot load object, model ${object.getModel().getName()} doesn't have associated api model name`
+      );
+    }
     const queryParams = Array.isArray(propertiesFilter)
       ? {'-properties': propertiesFilter}
       : null;
@@ -85,8 +92,15 @@ class ComhonRequester extends Requester {
         'invalid argument 1, it must be instance of Model or instance of ModelArray that contain model instance of Model'
       );
     }
-    let apiModelName = ApiModelNameManager.getApiModelName(model.getName());
-    apiModelName = apiModelName ?? model.getName();
+    const apiModelName = ComhonConfig.hasApiModelNameHandler() 
+      ? ComhonConfig.getApiModelNameHandler().getApiModelName(model.getName())
+      : model.getName();
+    // if getApiModelName return null value that means model is not requestable and can't be loaded
+    if (apiModelName === null) {
+			throw new ComhonException(
+        `Cannot load collection, model ${model.getName()} doesn't have associated api model name`
+      );
+    }
     const queryParams = {};
     if (Array.isArray(propertiesFilter)) {
       queryParams['-properties'] = propertiesFilter;
@@ -125,7 +139,15 @@ class ComhonRequester extends Requester {
 	 * @returns {Promise<*>}
 	 */
   async getManifest(modelName) {
-		const xhr = await this.get('manifest/'+modelName);
+    const apiModelName = ComhonConfig.hasApiModelNameHandler() 
+      ? ComhonConfig.getApiModelNameHandler().getApiModelName('Comhon\\Manifest')
+      : 'Comhon\\Manifest';
+    if (apiModelName === null) {
+      throw new ComhonException(
+        `Cannot get manifest, model Comhon\\Manifest doesn't have associated api model name`
+      );
+    }
+		const xhr = await this.get(apiModelName+'/'+modelName);
 
 		if (xhr.status !== 200) {
 			throw new HTTPException(xhr);
@@ -148,31 +170,52 @@ class ComhonRequester extends Requester {
   async getModelOptions(modelName) {
     let options = null;
     const optionsModel = await ModelManager.getInstance().getInstanceModel('Comhon\\Options');
-    const apiModelName = ApiModelNameManager.getApiModelName(modelName) ?? modelName;
-    const [collectionXhr, collectionAllowHeader] = await this._execPathOptionsRequest(apiModelName);
-
-    if (collectionXhr && collectionXhr.status === 200 && collectionXhr.response !== '') {
-      const interfacer = InterfacerFactory.getInstance(collectionXhr.getResponseHeader('Content-Type'));
-      options = await optionsModel.import(this._getParsedBodyWithInterfacer(collectionXhr, interfacer), interfacer);
+    const apiModelName = ComhonConfig.hasApiModelNameHandler() 
+      ? ComhonConfig.getApiModelNameHandler().getApiModelName(modelName)
+      : modelName;
+    // if getApiModelName return null value that means model is not requestable 
+    // and doesn't have any allowed method
+    if (apiModelName === null) {
+      options = this._buildOptions(modelName);
     } else {
-      // simulate unique request by puting a random id '1'
-      const uniqueResult = await this._execPathOptionsRequest(apiModelName+'/1');
+      const [collectionXhr, collectionAllowHeader] = await this._execPathOptionsRequest(apiModelName);
 
-      const collectionAllow = collectionAllowHeader === null ? [] : collectionAllowHeader.replace(/\s/g, '').split(',');
-  		const uniqueAllow = uniqueResult[1] === null ? [] : uniqueResult[1].replace(/\s/g, '').split(',');
+      if (collectionXhr && collectionXhr.status === 200 && collectionXhr.response !== '') {
+        const interfacer = InterfacerFactory.getInstance(collectionXhr.getResponseHeader('Content-Type'));
+        options = await optionsModel.import(this._getParsedBodyWithInterfacer(collectionXhr, interfacer), interfacer);
+      } else {
+        // simulate unique request by puting a random id '1'
+        const uniqueResult = await this._execPathOptionsRequest(apiModelName+'/1');
+        options = this._buildOptions(modelName, uniqueResult[1], collectionAllowHeader);
+      }
+    }
+    return options;
+  }
 
-  		options = optionsModel.getObjectInstance(true);
-  		options.setValue('name', modelName);
-  		const collection = await options.initValue('collection');
-  		const collectionAllowed = await collection.initValue('allowed_methods');
-  		for (const allow of collectionAllow) {
-  			collectionAllowed.pushValue(allow);
-  		}
-  		const unique = await options.initValue('unique');
-  		const uniqueAllowed = await unique.initValue('allowed_methods');
-  		for (const allow of uniqueAllow) {
-  			uniqueAllowed.pushValue(allow);
-  		}
+  /**
+   * buils options object according header values
+   * 
+   * @param {string} modelName 
+   * @param {string} uniqueAllowHeader 
+   * @param {string} collectionAllowHeader 
+   * @returns {ComhonObject} 
+   */
+  async _buildOptions(modelName, uniqueAllowHeader = null, collectionAllowHeader = null) {
+    const optionsModel = await ModelManager.getInstance().getInstanceModel('Comhon\\Options');
+    const collectionAllow = collectionAllowHeader === null ? [] : collectionAllowHeader.replace(/\s/g, '').split(',');
+    const uniqueAllow = uniqueAllowHeader === null ? [] : uniqueAllowHeader.replace(/\s/g, '').split(',');
+
+    const options = optionsModel.getObjectInstance(true);
+    options.setValue('name', modelName);
+    const collection = await options.initValue('collection');
+    const collectionAllowed = await collection.initValue('allowed_methods');
+    for (const allow of collectionAllow) {
+      collectionAllowed.pushValue(allow);
+    }
+    const unique = await options.initValue('unique');
+    const uniqueAllowed = await unique.initValue('allowed_methods');
+    for (const allow of uniqueAllow) {
+      uniqueAllowed.pushValue(allow);
     }
     return options;
   }

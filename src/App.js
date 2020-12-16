@@ -11,7 +11,7 @@ import PageList from 'Page/List/PageList';
 import PageDetails from 'Page/Details/PageDetails';
 import Loading from 'Loading/Loading';
 import Cookie from 'Cookie/Cookie';
-import ApiModelNameManager from 'Logic/Model/Manager/ApiModelNameManager';
+import ApiModelNameHandler from 'Logic/ApiModelName/ApiModelNameHandler';
 import ComhonConfig from 'Logic/Config/ComhonConfig';
 import ComhonException from 'Logic/Exception/ComhonException';
 import HTTPException from 'Logic/Exception/HTTP/HTTPException';
@@ -30,7 +30,8 @@ class App extends React.Component {
 
   componentDidMount() {
     ComhonConfig.initialize({
-      basePathURI : 'http://localhost:8000/api/comhon/'
+      basePathURI : 'http://localhost:8000/api/comhon/',
+      apiModelNameHandler : ApiModelNameHandler
     });
 
     let token = Cookie.getCookie('token');
@@ -61,7 +62,7 @@ class App extends React.Component {
 
   async initApp(islogged) {
     try {
-      const models = await ApiModelNameManager.getApiModelNames(!islogged);
+      const models = await ApiModelNameHandler.getApiModelNames(!islogged);
       this.setState({
         models: models,
         appInitialized: true,

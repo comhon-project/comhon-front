@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import 'Details/Details.css';
 import ComponentGenerator from 'ComponentGenerator/ComponentGenerator';
-import ApiModelNameManager from 'Logic/Model/Manager/ApiModelNameManager';
+import ComhonConfig from 'Logic/Config/ComhonConfig';
 import PageUtils from 'Page/Utils/PageUtils';
 
 class Details extends React.Component {
@@ -67,8 +67,9 @@ class Details extends React.Component {
     if (!this.state.isClickable) {
       return;
     }
-    let apiModelName = ApiModelNameManager.getApiModelName(this.props.object.getModel().getName());
-    apiModelName = apiModelName ?? this.props.object.getModel().getName();
+    const apiModelName = ComhonConfig.hasApiModelNameHandler() 
+      ? ComhonConfig.getApiModelNameHandler().getApiModelName(this.props.object.getModel().getName())
+      : this.props.object.getModel().getName();
     const newPath = '/'+apiModelName+'/'+this.props.object.getId();
     if (!this.props.isRoot && this.props.location.pathname !== newPath) {
       this.props.history.push(newPath);

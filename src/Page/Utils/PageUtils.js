@@ -1,5 +1,5 @@
 import ModelManager from 'Logic/Model/Manager/ModelManager';
-import ApiModelNameManager from 'Logic/Model/Manager/ApiModelNameManager';
+import ComhonConfig from 'Logic/Config/ComhonConfig';
 import ModelArray from 'Logic/Model/ModelArray';
 import ComhonException from 'Logic/Exception/ComhonException';
 import HTTPException from 'Logic/Exception/HTTP/HTTPException';
@@ -7,7 +7,7 @@ import HTTPException from 'Logic/Exception/HTTP/HTTPException';
 class PageUtils {
 
   /**
-   * get model according givenAPI ModelName
+   * get model according given API ModelName (extracted from path URI)
    *
    * @param {string} apiModelName the API model name
    * @param {boolean} collection if true ModelArray is return
@@ -17,8 +17,12 @@ class PageUtils {
   async getModelWithApiModelName(apiModelName, collection = false, onUnauthorized = null) {
     try {
       let model;
-      let modelName = ApiModelNameManager.getModelName(apiModelName);
-      modelName = modelName ?? apiModelName;
+      const modelName = ComhonConfig.hasApiModelNameHandler() 
+        ? ComhonConfig.getApiModelNameHandler().getModelName(apiModelName)
+        : apiModelName;
+      if (modelName === null) {
+        throw new ComhonException('model '+apiModelName+' not found');
+      }
       model = await ModelManager.getInstance().getInstanceModel(modelName);
       if (collection) {
         model = new ModelArray(model, false, model.getShortName(), [], [], false, true);
