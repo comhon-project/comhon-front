@@ -42,10 +42,10 @@ class ObjectCollection {
 	 *
 	 * @param {string|integer} id
 	 * @param {Model} model
-	 * @param {boolean} inlcudeInheritance if true, search in extended model that share same id
+	 * @param {boolean} includeInheritance if true, search in extended model that share same id
 	 * @returns {ComhonObject|void} null if not found
 	 */
-	getObject(id, model, inlcudeInheritance = true) {
+	getObject(id, model, includeInheritance = true) {
 		if (id === null) {
 			return null;
 		}
@@ -54,7 +54,7 @@ class ObjectCollection {
 
 		if (this.#map.has(key) && this.#map.get(key).has(id)) {
 			const objectTemp = this.#map.get(key).get(id);
-			if (objectTemp.isA(model) || (inlcudeInheritance && model.isInheritedFrom(objectTemp.getModel()))) {
+			if (objectTemp.isA(model) || (includeInheritance && model.isInheritedFrom(objectTemp.getModel()))) {
 				object = objectTemp;
 			}
 		}
@@ -67,11 +67,11 @@ class ObjectCollection {
 	 *
 	 * @param {string|integer} id
 	 * @param {Model} model
-	 * @param {boolean} inlcudeInheritance if true, search in extended model that share same id
+	 * @param {boolean} includeInheritance if true, search in extended model that share same id
 	 * @returns {boolean} true if exists
 	 */
-	hasObject(id, model, inlcudeInheritance = true) {
-		return this.getObject(id, model, inlcudeInheritance) !== null;
+	hasObject(id, model, includeInheritance = true) {
+		return this.getObject(id, model, includeInheritance) !== null;
 	}
 
 	/**
