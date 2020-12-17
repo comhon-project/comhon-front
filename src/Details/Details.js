@@ -4,6 +4,7 @@ import 'Details/Details.css';
 import ComhonComponent from 'ComhonComponent/ComhonComponent';
 import ComhonConfig from 'Logic/Config/ComhonConfig';
 import PageUtils from 'Page/Utils/PageUtils';
+import Button from 'DesignSystem/Button/Button';
 
 class Details extends React.Component {
 
@@ -79,7 +80,7 @@ class Details extends React.Component {
   render() {
     return (
       this.props.isForeign
-      ? <span className={this.state.isClickable ? 'foreign simple clickable' : 'foreign simple'} onClick={this.handleClick}>{this.props.value.getId()}</span>
+      ? <Button className={this.state.isClickable ? 'foreign simple clickable' : 'foreign simple'} onClick={this.handleClick}>{this.props.value.getId()}</Button>
       : <div className={this.state.isClickable ? 'details clickable' : 'details'} onClick={this.handleClick}>
           {this.getPropertiesComponents(this.props.value)}
         </div>
