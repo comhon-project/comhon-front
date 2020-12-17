@@ -3,7 +3,7 @@ import './PageObject.css';
 import ModelArray from 'Logic/Model/ModelArray';
 import Model from 'Logic/Model/Model';
 import Requester from 'Logic/Requester/ComhonRequester';
-import ComponentGenerator from 'ComponentGenerator/ComponentGenerator';
+import ComhonComponent from 'ComhonComponent/ComhonComponent';
 import Loading from 'Loading/Loading';
 import PageUtils from 'Page/Utils/PageUtils';
 import ComhonException from 'Logic/Exception/ComhonException';
@@ -73,7 +73,7 @@ class PageObject extends React.Component {
       <div>
         {
           this.state.object !== null
-            ? ComponentGenerator.generate(this.state.object, this.props.model, false, isAggregation, true)
+            ? <ComhonComponent value={this.state.object} model={this.props.model} isRoot={true} isAggregation={isAggregation}/>
             : (this.state.error ? this.state.error : <Loading />)
         }
       </div>

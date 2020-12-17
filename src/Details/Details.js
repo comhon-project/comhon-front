@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import 'Details/Details.css';
-import ComponentGenerator from 'ComponentGenerator/ComponentGenerator';
+import ComhonComponent from 'ComhonComponent/ComhonComponent';
 import ComhonConfig from 'Logic/Config/ComhonConfig';
 import PageUtils from 'Page/Utils/PageUtils';
 
@@ -12,7 +12,7 @@ class Details extends React.Component {
     this.state = {
       isClickable: false
     };
-    this.getComponentList = this.getComponentList.bind(this);
+    this.getPropertiesComponents = this.getPropertiesComponents.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
 
@@ -25,10 +25,10 @@ class Details extends React.Component {
       this.setState({isClickable: true});
       return;
     }
-    if (!this.props.isForeign || this.props.isRoot || !this.props.object.getModel().hasIdProperties()) {
+    if (!this.props.isForeign || this.props.isRoot || !this.props.value.getModel().hasIdProperties()) {
       return;
     }
-    if (await PageUtils.isRequestable(this.props.object.getModel())) {
+    if (await PageUtils.isRequestable(this.props.value.getModel())) {
         this.setState({isClickable: true});
     }
   }
@@ -40,17 +40,17 @@ class Details extends React.Component {
     return (
       <div className="value" key={propertyName}>
         <span className="property">{propertyName} :</span>
-        {ComponentGenerator.generate(value, propertyModel)}
+        <ComhonComponent value={value} model={propertyModel} />
       </div>
     );
   }
 
-  getComponentList(object) {
+  getPropertiesComponents(object) {
     const list = [];
     for (const keyAndvalue of object) {
       list.push(this.getValueComponent(object, keyAndvalue[0]));
     }
-    if (object.getModel() !== this.props.componentModel) {
+    if (object.getModel() !== this.props.model) {
       list.push(
         <div className="value" key="inheritance-">
           <span className="property">inheritance :</span>
@@ -68,9 +68,9 @@ class Details extends React.Component {
       return;
     }
     const apiModelName = ComhonConfig.hasApiModelNameHandler() 
-      ? ComhonConfig.getApiModelNameHandler().getApiModelName(this.props.object.getModel().getName())
-      : this.props.object.getModel().getName();
-    const newPath = '/'+apiModelName+'/'+this.props.object.getId();
+      ? ComhonConfig.getApiModelNameHandler().getApiModelName(this.props.value.getModel().getName())
+      : this.props.value.getModel().getName();
+    const newPath = '/'+apiModelName+'/'+this.props.value.getId();
     if (!this.props.isRoot && this.props.location.pathname !== newPath) {
       this.props.history.push(newPath);
     }
@@ -79,9 +79,9 @@ class Details extends React.Component {
   render() {
     return (
       this.props.isForeign
-      ? <span className={this.state.isClickable ? 'foreign simple clickable' : 'foreign simple'} onClick={this.handleClick}>{this.props.object.getId()}</span>
+      ? <span className={this.state.isClickable ? 'foreign simple clickable' : 'foreign simple'} onClick={this.handleClick}>{this.props.value.getId()}</span>
       : <div className={this.state.isClickable ? 'details clickable' : 'details'} onClick={this.handleClick}>
-          {this.getComponentList(this.props.object)}
+          {this.getPropertiesComponents(this.props.value)}
         </div>
     );
   }

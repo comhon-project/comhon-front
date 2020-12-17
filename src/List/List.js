@@ -3,22 +3,12 @@ import './List.css';
 import ComhonArray from 'Logic/Object/ComhonArray';
 import Model from 'Logic/Model/Model';
 import ModelArray from 'Logic/Model/ModelArray';
-import ComponentGenerator from 'ComponentGenerator/ComponentGenerator';
+import ComhonComponent from 'ComhonComponent/ComhonComponent';
 
 class List extends React.Component {
 
-  #isForeign = false;
-
-  #isAggregation = false;
-
   constructor(props) {
     super(props);
-    if (props.isForeign) {
-      this.#isForeign = true;
-    }
-    if (props.isAggregation) {
-      this.#isAggregation = true;
-    }
     this.getComponentList = this.getComponentList.bind(this);
     this.getValueComponent = this.getValueComponent.bind(this);
   }
@@ -33,7 +23,7 @@ class List extends React.Component {
       <div key={componentKey}>
         {isComplex ? <div className="separator"/> : null}
         {isComplex ? null : (object.getModel().isAssociative() ? `${key} : ` : '- ')}
-        {ComponentGenerator.generate(value, elementModel, this.#isForeign, this.#isAggregation)}
+        <ComhonComponent value={value} model={elementModel} isForeign={this.props.isForeign} isAggregation={this.props.isAggregation}/>
       </div>
     );
   }
@@ -50,14 +40,14 @@ class List extends React.Component {
   }
 
   render() {
-    const isComplex = this.props.object
-      && (this.props.object.getModel().getLoadedModel() instanceof ModelArray
-      || this.props.object.getModel().getLoadedModel() instanceof Model);
+    const isComplex = this.props.value
+      && (this.props.value.getModel().getLoadedModel() instanceof ModelArray
+      || this.props.value.getModel().getLoadedModel() instanceof Model);
 
     return (
-      this.props.object.count() > 0
+      this.props.value.count() > 0
       ? <div className={isComplex ? 'complexList' : 'simpleList'}>
-          {this.getComponentList(this.props.object)}
+          {this.getComponentList(this.props.value)}
         </div>
       : (this.props.isRoot
           ? <span style={{fontSize: '30px'}}>no results</span>
