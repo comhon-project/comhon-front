@@ -4,56 +4,28 @@ function getDisplayName(WrappedComponent) {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 }
 
-class OverridableErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false };
-  }
+function overridable(WrappedComponent) {
+  const toOverrideName = getDisplayName(WrappedComponent)
+  let overrided = null
+  import(`Overrides/${toOverrideName}/${toOverrideName}`).then((module) => {
+    overrided = module.default
+  }).catch((reason) => {
+    console.log('reason', reason)
+  })
 
-  static getDerivedStateFromError(error) {
-    // Update state so the next render will show the fallback UI.
-    return { hasError: true };
-  }
-
-  componentDidCatch(error, errorInfo) {
-    // You can also log the error to an error reporting service
-    console.log('cannot load', error, errorInfo);
-  }
-
-  render() {
-    return this.state.hasError ? this.props.original : this.props.children
-  }
-}
-
-export function overridable(WrappedComponent) {
   class Overridable extends React.Component {
-
-    #overrided = null
-
     constructor(props) {
       super(props)
-      console.log('props', props)
-      console.log('this', this)
-      const toOverrideName = getDisplayName(WrappedComponent)
-      console.log('WrappedComponent', toOverrideName)
-      try {
-        this.#overrided = React.lazy(() => import(`Overrides/${toOverrideName}/${toOverrideName}`))
-      } catch (e) {
-        // do nothing
-      }
     }
 
     render() {
-      const {forwardedRef, ...rest} = this.props;
-      const Overrided = this.#overrided;
-      return <OverridableErrorBoundary original={<WrappedComponent ref={forwardedRef} {...rest} />}>
-        <Suspense fallback={<div>Loading...</div>}>
-          <Overrided ref={forwardedRef} {...rest} />
-        </Suspense>
-      </OverridableErrorBoundary>
+      const { forwardedRef, ...rest } = this.props;
+      console.log('this.#overrided', overrided)
+      const Overrided = overrided || WrappedComponent
+      return <Overrided ref={forwardedRef} {...rest} />
     }
   }
-  
+
   function forwardRef(props, ref) {
     return <Overridable {...props} forwardedRef={ref} />
   }
@@ -61,3 +33,5 @@ export function overridable(WrappedComponent) {
 
   return React.forwardRef(forwardRef)
 }
+
+export default overridable

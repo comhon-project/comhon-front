@@ -1,4 +1,4 @@
-import { overridable } from 'DesignSystem/overridable';
+import overridable from 'DesignSystem/overridable';
 import React from 'react';
 import './Button.css';
 
