@@ -1,10 +1,11 @@
 import React from 'react';
 import './CcPercentage.css';
 import overridable from 'DesignSystem/overridable';
+import CcSimple from 'DesignSystem/CcSimple/CcSimple';
 
 function CcPercentage(props) {
   return (
-    <span className='cc-percentage'>{(props.value * 100) + ' %'}</span>
+    <CcSimple>{(props.value * 100) + ' %'}</CcSimple>
   )
 }
 

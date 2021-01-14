@@ -1,13 +1,14 @@
 import React from 'react';
 import './CcBoolean.css';
 import overridable from 'DesignSystem/overridable';
+import CcSimple from 'DesignSystem/CcSimple/CcSimple';
 
 
 function CcBoolean(props) {
   return (
     props.value
-      ? <span className="cc-boolean cc-true">true</span>
-      : <span className="cc-boolean cc-false">false</span>
+      ? <CcSimple className="cc-true">true</CcSimple>
+      : <CcSimple className="cc-false">false</CcSimple>
   )
 }
 
