@@ -1,12 +1,16 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import 'Details/Details.css';
-import ComhonComponent from 'ComhonComponent/ComhonComponent';
+import './CcObject.css';
+import ComhonComponent from 'DesignSystem/ComhonComponent/ComhonComponent';
 import ComhonConfig from 'Logic/Config/ComhonConfig';
 import PageUtils from 'Page/Utils/PageUtils';
-import Button from 'DesignSystem/Button/Button';
+import CcButton from 'DesignSystem/CcButton/CcButton';
+import CcProperty from 'DesignSystem/CcProperty/CcProperty';
+import CcNull from 'DesignSystem/CcNull/CcNull';
+import CcInheritance from 'DesignSystem/CcInheritance/CcInheritance';
+import overridable from 'DesignSystem/overridable';
 
-class Details extends React.Component {
+class CcObject extends React.Component {
 
   constructor(props) {
     super(props);
@@ -36,12 +40,18 @@ class Details extends React.Component {
 
   getValueComponent(object, propertyName) {
     const value = object.getValue(propertyName);
-    const propertyModel = object.getModel().getProperty(propertyName).getLoadedModel();
+    let componentValue = null;
+    if (value === null) {
+      componentValue = <CcNull/>;
+    } else {
+      const propertyModel = object.getModel().getProperty(propertyName).getLoadedModel();
+      componentValue = <ComhonComponent value={value} model={propertyModel} />;
+    }
 
     return (
       <div className="value" key={propertyName}>
-        <span className="property">{propertyName} :</span>
-        <ComhonComponent value={value} model={propertyModel} />
+        <CcProperty name={propertyName}/>
+        {componentValue}
       </div>
     );
   }
@@ -54,8 +64,8 @@ class Details extends React.Component {
     if (object.getModel() !== this.props.model) {
       list.push(
         <div className="value" key="inheritance-">
-          <span className="property">inheritance :</span>
-          <span className="simple inheritance">{object.getModel().getName()}</span>
+          <CcProperty name="inheritance"/>
+          <CcInheritance model={object.getModel()}/>
         </div>
       );
     }
@@ -80,12 +90,12 @@ class Details extends React.Component {
   render() {
     return (
       this.props.isForeign
-      ? <Button className={this.state.isClickable ? 'foreign simple clickable' : 'foreign simple'} onClick={this.handleClick}>{this.props.value.getId()}</Button>
-      : <div className={this.state.isClickable ? 'details clickable' : 'details'} onClick={this.handleClick}>
+      ? <CcButton className={this.state.isClickable ? 'foreign clickable' : 'foreign'} onClick={this.handleClick}>{this.props.value.getId()}</CcButton>
+      : <div className={this.state.isClickable ? 'cc-object clickable' : 'cc-object'} onClick={this.handleClick}>
           {this.getPropertiesComponents(this.props.value)}
         </div>
     );
   }
 }
 
-export default withRouter(Details);
+export default withRouter(overridable(CcObject));

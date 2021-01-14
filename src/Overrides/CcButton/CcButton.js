@@ -1,6 +1,6 @@
-import './Button.css';
+import './CcButton.css';
 
-function Button(props) {
+function CcButton(props) {
   return (
     <button className='my-button'>
       {props.children}
@@ -8,4 +8,4 @@ function Button(props) {
   )
 }
 
-export default Button;
+export default CcButton;

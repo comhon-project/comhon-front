@@ -17,8 +17,8 @@ class ModelFloat extends SimpleModel {
 	static get ID() {return 'float';}
 
 
-	constructor() {
-		super(ModelFloat.ID);
+	constructor(name = null) {
+		super(name ?? ModelFloat.ID);
 	}
 
 	/**
