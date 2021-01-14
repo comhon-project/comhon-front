@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 
 function getDisplayName(WrappedComponent) {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
@@ -14,10 +14,6 @@ function overridable(WrappedComponent) {
   })
 
   class Overridable extends React.Component {
-    constructor(props) {
-      super(props)
-    }
-
     render() {
       const { forwardedRef, ...rest } = this.props;
       console.log('this.#overrided', overrided)
