@@ -9,7 +9,7 @@
 
 import Restriction from 'Logic/Model/Restriction/Restriction';
 import ModelFloat from 'Logic/Model/ModelFloat';
-import ModelDateTime from 'Logic/Model/ModelFloat';
+import ModelDateTime from 'Logic/Model/ModelDateTime';
 import ModelInteger from 'Logic/Model/ModelInteger';
 import ComhonDateTime from 'Logic/Object/ComhonDateTime';
 import MalformedIntervalException from 'Logic/Exception/Restriction/MalformedIntervalException';

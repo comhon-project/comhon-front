@@ -16,8 +16,8 @@ class ModelInteger extends SimpleModel {
 	/** @type {string} */
 	static get ID() {return 'integer';}
 
-	constructor() {
-		super(ModelInteger.ID);
+	constructor(name = null) {
+		super(name ?? ModelInteger.ID);
 	}
 
 	/**

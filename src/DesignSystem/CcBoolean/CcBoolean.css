@@ -1,0 +1,11 @@
+.cc-boolean {
+  font-weight: bold;
+}
+
+.cc-true {
+  color: #4CAF50;
+}
+
+.cc-false {
+  color: red;
+}

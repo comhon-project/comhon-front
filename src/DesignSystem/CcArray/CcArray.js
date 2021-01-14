@@ -1,11 +1,13 @@
 import React from 'react';
-import './List.css';
+import './CcArray.css';
+import overridable from 'DesignSystem/overridable';
 import ComhonArray from 'Logic/Object/ComhonArray';
 import Model from 'Logic/Model/Model';
 import ModelArray from 'Logic/Model/ModelArray';
-import ComhonComponent from 'ComhonComponent/ComhonComponent';
+import ComhonComponent from 'DesignSystem/ComhonComponent/ComhonComponent';
+import CcEmpty from 'DesignSystem/CcEmpty/CcEmpty';
 
-class List extends React.Component {
+class CcArray extends React.Component {
 
   constructor(props) {
     super(props);
@@ -51,10 +53,10 @@ class List extends React.Component {
         </div>
       : (this.props.isRoot
           ? <span style={{fontSize: '30px'}}>no results</span>
-          : <span className="simple null">{'<empty>'}</span>
+          : <CcEmpty/>
         )
     );
   }
 }
 
-export default List;
+export default overridable(CcArray);

@@ -3,7 +3,7 @@ import './PageObject.css';
 import ModelArray from 'Logic/Model/ModelArray';
 import Model from 'Logic/Model/Model';
 import Requester from 'Logic/Requester/ComhonRequester';
-import ComhonComponent from 'ComhonComponent/ComhonComponent';
+import ComhonComponent from 'DesignSystem/ComhonComponent/ComhonComponent';
 import Loading from 'Loading/Loading';
 import PageUtils from 'Page/Utils/PageUtils';
 import ComhonException from 'Logic/Exception/ComhonException';
