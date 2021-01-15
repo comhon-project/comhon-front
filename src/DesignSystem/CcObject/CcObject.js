@@ -9,6 +9,7 @@ import CcProperty from 'DesignSystem/CcProperty/CcProperty';
 import CcNull from 'DesignSystem/CcNull/CcNull';
 import CcInheritance from 'DesignSystem/CcInheritance/CcInheritance';
 import overridable from 'DesignSystem/overridable';
+import CcSimple from 'DesignSystem/CcSimple/CcSimple';
 
 class CcObject extends React.Component {
 
@@ -49,7 +50,7 @@ class CcObject extends React.Component {
     }
 
     return (
-      <div className="value" key={propertyName}>
+      <div className="cc-property-value" key={propertyName}>
         <CcProperty name={propertyName}/>
         {componentValue}
       </div>
@@ -63,7 +64,7 @@ class CcObject extends React.Component {
     }
     if (object.getModel() !== this.props.model) {
       list.push(
-        <div className="value" key="inheritance-">
+        <div className="cc-property-value" key="inheritance-">
           <CcProperty name="inheritance"/>
           <CcInheritance model={object.getModel()}/>
         </div>
@@ -90,8 +91,10 @@ class CcObject extends React.Component {
   render() {
     return (
       this.props.isForeign
-      ? <CcButton className={this.state.isClickable ? 'foreign clickable' : 'foreign'} onClick={this.handleClick}>{this.props.value.getId()}</CcButton>
-      : <div className={this.state.isClickable ? 'cc-object clickable' : 'cc-object'} onClick={this.handleClick}>
+      ? (this.state.isClickable 
+        ? <CcButton onClick={this.handleClick}><CcSimple>{this.props.value.getId()}</CcSimple></CcButton>
+        : <CcSimple>{this.props.value.getId()}</CcSimple>)
+      : <div className={this.state.isClickable ? 'cc-object cc-clickable' : 'cc-object'} onClick={this.handleClick}>
           {this.getPropertiesComponents(this.props.value)}
         </div>
     );

@@ -10,13 +10,12 @@ function overridable(WrappedComponent) {
   import(`Overrides/${toOverrideName}/${toOverrideName}`).then((module) => {
     overrided = module.default
   }).catch((reason) => {
-    console.log('reason', reason)
+    // do nothing
   })
 
   class Overridable extends React.Component {
     render() {
       const { forwardedRef, ...rest } = this.props;
-      console.log('this.#overrided', overrided)
       const Overrided = overrided || WrappedComponent
       return <Overrided ref={forwardedRef} {...rest} />
     }

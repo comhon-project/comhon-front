@@ -4,7 +4,7 @@ import overridable from 'DesignSystem/overridable';
 
 function CcButton(props) {
   return (
-    <button className='cc-button'>
+    <button className='cc-button' {...props}>
       {props.children}
     </button>
   )

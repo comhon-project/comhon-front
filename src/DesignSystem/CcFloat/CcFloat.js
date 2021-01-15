@@ -1,10 +1,11 @@
 import React from 'react';
 import './CcFloat.css';
 import overridable from 'DesignSystem/overridable';
+import CcSimple from 'DesignSystem/CcSimple/CcSimple';
 
 function CcFloat(props) {
   return (
-    <span className='cc-float'>{props.value}</span>
+    <CcSimple>{props.value}</CcSimple>
   )
 }
 

@@ -1,10 +1,11 @@
 import React from 'react';
 import './CcIndex.css';
 import overridable from 'DesignSystem/overridable';
+import CcSimple from 'DesignSystem/CcSimple/CcSimple';
 
 function CcIndex(props) {
   return (
-    <span className='cc-index'>{props.value}</span>
+    <CcSimple>{props.value}</CcSimple>
   )
 }
 

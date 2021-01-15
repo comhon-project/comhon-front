@@ -1,10 +1,11 @@
 import React from 'react';
 import './CcInteger.css';
 import overridable from 'DesignSystem/overridable';
+import CcSimple from 'DesignSystem/CcSimple/CcSimple';
 
 function CcInteger(props) {
   return (
-    <span className='cc-integer'>{props.value}</span>
+    <CcSimple>{props.value}</CcSimple>
   )
 }
 

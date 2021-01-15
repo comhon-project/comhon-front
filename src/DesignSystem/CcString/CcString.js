@@ -2,11 +2,12 @@ import React from 'react';
 import './CcString.css';
 import CcEmpty from 'DesignSystem/CcEmpty/CcEmpty';
 import overridable from 'DesignSystem/overridable';
+import CcSimple from 'DesignSystem/CcSimple/CcSimple';
 
 function CcString(props) {
   return (
     props.value !== ''
-    ? <span className='cc-string'>{props.value}</span>
+    ? <CcSimple>{props.value}</CcSimple>
     : <CcEmpty/>
   )
 }

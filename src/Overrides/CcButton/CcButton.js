@@ -2,7 +2,7 @@ import './CcButton.css';
 
 function CcButton(props) {
   return (
-    <button className='my-button'>
+    <button className='my-button' {...props}>
       {props.children}
     </button>
   )
