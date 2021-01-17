@@ -142,7 +142,34 @@ class ModelContainer extends ModelComplex {
 	}
 
 	/**
-	 * verify unique model inside model container is a simple model
+	 * verify if model inside model container is loaded
+	 *
+	 * @returns {boolean}
+	 */
+	isContainedModelLoaded() {
+		return this.#model.isLoaded();
+	}
+
+	/**
+	 * verify if model inside model container is a simple model
+	 *
+	 * @returns {boolean}
+	 */
+	isContainedModelSimple() {
+		return this.#model instanceof SimpleModel;
+	}
+
+	/**
+	 * get contained model class name
+	 *
+	 * @returns {boolean}
+	 */
+	getContainedModelClassName() {
+		return this.#model.getClassName();
+	}
+
+	/**
+	 * verify if unique model inside model container is a simple model
 	 *
 	 * @returns {boolean}
 	 */

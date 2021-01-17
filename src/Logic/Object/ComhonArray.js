@@ -40,7 +40,8 @@ class ComhonArray extends AbstractComhonObject {
 			objectModel = new ModelArray(model, isAssociative, elementName === null ? model.getShortName() : elementName);
 		}
 		// ensure that unique model is loaded
-		objectModel.getLoadedUniqueModel();
+		// not sure, I think model doesn't have to be loaded
+		//objectModel.getLoadedUniqueModel();
 		super(objectModel);
 		this.setIsLoaded(isLoaded);
 	}

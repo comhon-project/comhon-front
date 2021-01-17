@@ -134,6 +134,15 @@ class Property {
 
 
 	/**
+	 * verify if model is loaded
+	 *
+	 * @returns {boolean}
+	 */
+	isContainedModelLoaded() {
+		return this.#model.isLoaded();
+	}
+
+	/**
 	 * get loaded model.
 	 *
 	 * if the contained model is a unique model and is not loaded, an exception is thrown.
@@ -141,9 +150,9 @@ class Property {
 	 * @returns {Model|SimpleModel|ModelContainer}
 	 */
 	getLoadedModel() {
-    if (!this.#model.isLoaded()) {
-      throw new ComhonException('model not loaded')
-    }
+		if (!this.#model.isLoaded()) {
+			throw new ComhonException('model not loaded')
+		}
 		return this.#model;
 	}
 
@@ -228,7 +237,7 @@ class Property {
 	 * @returns {*|void} null if property doesn't have default value
 	 */
 	getDefaultValue() {
-		if (this.#model instanceof ModelDateTime) {
+		if (this.#default !== null && this.#model instanceof ModelDateTime) {
 			return new ComhonDateTime(this.#default);
 		}
 		return this.#default;

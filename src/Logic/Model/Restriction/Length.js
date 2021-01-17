@@ -58,11 +58,11 @@ class Length extends Interval {
 		return 'length ' + value.length + ' of given string'
 			+ ' is' + (this.satisfy(value) ? ' ' : ' not ')
 			+ 'in length range '
-			+ (this._isLeftClosed() ? '[' : ']')
-			+ this._getLeftEndPoint()
+			+ (this.isLeftClosed() ? '[' : ']')
+			+ this.getLeftEndPoint()
 			+ ','
-			+ this._getRightEndPoint()
-			+ (this._isRightClosed() ? ']' : '[');
+			+ this.getRightEndPoint()
+			+ (this.isRightClosed() ? ']' : '[');
 	}
 
 }

@@ -4,7 +4,7 @@ import 'Page/List/PageList.css';
 import PageObject from 'Page/Object/PageObject';
 import PageFilter from 'Page/Filter/PageFilter';
 import PageUtils from 'Page/Utils/PageUtils';
-import Loading from 'Loading/Loading';
+import CcLoading from 'DesignSystem/Display/CcLoading/CcLoading';
 
 
 class PageList extends React.Component {
@@ -38,7 +38,7 @@ class PageList extends React.Component {
               <PageFilter model={this.state.model} onUnauthorized={this.props.onUnauthorized}/>
               <PageObject model={this.state.model} onUnauthorized={this.props.onUnauthorized}/>
             </div>
-          : (this.state.error ? null : <Loading/>)
+          : (this.state.error ? null : <CcLoading/>)
         }
       </div>
     );

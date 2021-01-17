@@ -23,7 +23,15 @@ class Enum extends Restriction {
 	 */
 	constructor(enumeration) {
 		super();
-		this.#enumeration = enumeration
+		this.#enumeration = enumeration;
+		Object.freeze(this.#enumeration);
+	}
+
+	/**
+	 * get enumeration values
+	 */
+	getEnum() {
+		return this.#enumeration;
 	}
 
 	/**
@@ -53,13 +61,13 @@ class Enum extends Restriction {
 
 		// copy and sort arrays
 		const arr1 = this.#enumeration.concat().sort();
-    const arr2 = restriction.#enumeration.concat().sort();
+		const arr2 = restriction.#enumeration.concat().sort();
 
-    for (let i = 0; i < arr1.length; i++) {
-      if (arr1[i] !== arr2[i]) {
-        return false;
+		for (let i = 0; i < arr1.length; i++) {
+			if (arr1[i] !== arr2[i]) {
+				return false;
 			}
-    }
+		}
 		return true;
 	}
 

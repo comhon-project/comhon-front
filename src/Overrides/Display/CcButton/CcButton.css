@@ -1,0 +1,21 @@
+.my-button {
+    color: #fff;
+    background-color: #2977eb;
+    border-color: #2977eb;
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.my-button:hover {
+    background-color: blue;
+    border-color: blue;
+}

@@ -9,6 +9,7 @@
 
 import ComhonException from 'Logic/Exception/ComhonException';
 import ConstantException from 'Logic/Exception/ConstantException';
+import ComhonDateTime from 'Logic/Object/ComhonDateTime';
 
 class UnexpectedValueTypeException extends ComhonException {
 
@@ -29,9 +30,10 @@ class UnexpectedValueTypeException extends ComhonException {
 		if (value === null) {
 			type = 'null';
 		} else if (typeof value === 'object') {
-			// cannot use (value instanceof AbstractComhonObject) due to a kind of import loop
-			if (value.getClassName() === 'ComhonObject' || value.getClassName() === 'ComhonArray') {
+			if (value.getClassName && (value.getClassName() === 'ComhonObject' || value.getClassName() === 'ComhonArray')) {
 				type = value.getComhonClass();
+			} else if (value instanceof ComhonDateTime && isNaN(value)) {
+				type = 'Invalid Date';
 			} else {
 				type = value.constructor.name;
 			}

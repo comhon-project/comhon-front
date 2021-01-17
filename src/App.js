@@ -9,7 +9,8 @@ import Login from 'Login/Login';
 import NavBar from 'NavBar/NavBar';
 import PageList from 'Page/List/PageList';
 import PageDetails from 'Page/Details/PageDetails';
-import Loading from 'Loading/Loading';
+import PageEdit from 'Page/Edit/PageEdit';
+import CcLoading from 'DesignSystem/Display/CcLoading/CcLoading';
 import Cookie from 'Cookie/Cookie';
 import ApiModelNameHandler from 'Logic/ApiModelName/ApiModelNameHandler';
 import ComhonConfig from 'Logic/Config/ComhonConfig';
@@ -111,10 +112,11 @@ class App extends React.Component {
                 <Route exact path='/' component={Home} />
                 <Route exact path='/home' component={Home} />
                 <Route exact path='/login' component={() => <Login onLogin={this.handleLogin} />} />
+                <Route path='/:pathModel/:id/edit' component={() => <PageEdit key={Date.now()} onUnauthorized={this.showLoginModal} />} />
                 <Route path='/:pathModel/:id' component={() => <PageDetails key={Date.now()} onUnauthorized={this.showLoginModal} />} />
                 <Route path='/:pathModel' component={() => <PageList key={Date.now()} onUnauthorized={this.showLoginModal} />} />
               </Switch>
-            : <Loading />
+            : <CcLoading />
           }
         </div>
         <div id="loginModal" className="modal" tabIndex="-1">
