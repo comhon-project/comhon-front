@@ -67,7 +67,7 @@ class AbstractComhonObject {
 	constructor(model) {
 		if (this.constructor === AbstractComhonObject) {
 			throw new Error('can\'t instanciate abstract class AbstractComhonObject');
-		} else if (this.getClassName() === 'ComhonArray') {
+		} else if (this.getClassName() === 'ComhonArray' && !model.isAssociative()) {
 			this.#values = [];
 		}
 		this.#model = model;
@@ -116,6 +116,10 @@ class AbstractComhonObject {
 				MainObjectCollection.removeObject(this, false);
 			}
 			if (Array.isArray(this.#values)) {
+				// if array, name is actually an index
+				if (name > this.#values.length) {
+					throw new ComhonException(name+' is out of range, it cannot be set');
+				}
 				this.#values[name] = value;
 			} else {
 				this.#values.set(name, value);
@@ -123,6 +127,10 @@ class AbstractComhonObject {
 			MainObjectCollection.addObject(this, false);
 		} else {
 			if (Array.isArray(this.#values)) {
+				// if array, name is actually an index
+				if (name > this.#values.length) {
+					throw new ComhonException(name+' is out of range, it cannot be set');
+				}
 				this.#values[name] = value;
 			} else {
 				this.#values.set(name, value);
@@ -215,7 +223,7 @@ class AbstractComhonObject {
 				MainObjectCollection.removeObject(this);
 			}
 			if (Array.isArray(this.#values)) {
-			delete this.#values[name];
+			this.#values.splice(name, 1)
 			} else {
 				this.#values.delete(name);
 			}

@@ -1,0 +1,7 @@
+.cc-button-active-activated {
+    box-shadow: 2px 2px 10px black inset;
+}
+
+.cc-button-active:active {
+    box-shadow: 2px 2px 10px black inset;
+}

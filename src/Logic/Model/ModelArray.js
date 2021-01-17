@@ -209,7 +209,7 @@ class ModelArray extends ModelContainer {
 		if (!isFirstLevel || interfacer.mustValidate()) {
 			objectArray.validate();
 		}
-		const nodeArray = interfacer.createArrayNode(nodeName);
+		const nodeArray = interfacer.createArrayNode(nodeName, this.#isAssociative);
 		isolate = isolate || this.#isIsolatedElement;
 
 		let key, value, exportedValue;
@@ -240,7 +240,7 @@ class ModelArray extends ModelContainer {
 	 * @see {ModelComplex}::_exportId()
 	 */
 	_exportId(objectArray, nodeName, interfacer, objectCollectionInterfacer, nullNodes) {
-		const nodeArray = interfacer.createArrayNode(nodeName);
+		const nodeArray = interfacer.createArrayNode(nodeName, this.#isAssociative);
 
 		let key, value, exportedValue;
 		for ([key, value] of objectArray) {

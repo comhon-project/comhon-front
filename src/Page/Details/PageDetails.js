@@ -2,7 +2,7 @@ import React from 'react';
 import 'Page/Details/PageDetails.css';
 import PageObject from 'Page/Object/PageObject';
 import PageUtils from 'Page/Utils/PageUtils';
-import Loading from 'Loading/Loading';
+import CcLoading from 'DesignSystem/Display/CcLoading/CcLoading';
 
 import { withRouter } from "react-router";
 
@@ -39,7 +39,7 @@ class PageDetails extends React.Component {
           ? <div>
               <PageObject model={this.state.model} id={this.props.match.params.id} onUnauthorized={this.props.onUnauthorized}/>
             </div>
-          : (this.state.error ? null : <Loading/>)
+          : (this.state.error ? null : <CcLoading/>)
         }
       </div>
     );

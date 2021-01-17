@@ -62,11 +62,11 @@ class Size extends Interval {
 			+ 'size ' + (value.count() + increment) + ' of given array'
 			+ ' is' + (this.satisfy(value, increment) ? ' ' : ' not ')
 			+ 'in size range '
-			+ (this._isLeftClosed() ? '[' : ']')
-			+ this._getLeftEndPoint()
+			+ (this.isLeftClosed() ? '[' : ']')
+			+ this.getLeftEndPoint()
 			+ ','
-			+ this._getRightEndPoint()
-			+ (this._isRightClosed() ? ']' : '[');
+			+ this.getRightEndPoint()
+			+ (this.isRightClosed() ? ']' : '[');
 	}
 
 }

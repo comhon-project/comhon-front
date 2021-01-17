@@ -16,7 +16,6 @@ ReactDOM.render(
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
-  //  <Route path="/:model" component={CarDetail} data={data}/>
 );
 
 // If you want your app to work offline and load faster, you can change

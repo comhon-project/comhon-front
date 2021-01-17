@@ -229,10 +229,11 @@ class ObjectInterfacer extends Interfacer {
 	 * create array node
 	 *
 	 * @param {string} name not used (but needed to stay compatible with interface)
+	 * @param {boolean} isAssociative determine if array is associative (if true, an object is created)
 	 * @returns {array}
 	 */
-	createArrayNode(name = null) {
-		return [];
+	createArrayNode(name = null, isAssociative = false) {
+		return isAssociative ? {} : [];
 	}
 
 	/**

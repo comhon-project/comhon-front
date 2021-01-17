@@ -1,0 +1,13 @@
+.separator {
+    border-bottom:1px solid;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.complexArray {
+    padding-left: 25px;
+}
+
+.simpleArray {
+    padding-left: 25px;
+}

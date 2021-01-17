@@ -41,7 +41,11 @@ class ModelDateTime extends SimpleModel {
 		if (typeof value !== 'string') {
 			throw new UnexpectedValueTypeException(value, 'string');
 		}
-		return this.fromString(value);
+		const date = this.fromString(value);
+		if (isNaN(date)) {
+			throw new UnexpectedValueTypeException(date, 'ComhonDateTime');
+		}
+		return date;
 	}
 
 	/**
@@ -71,7 +75,7 @@ class ModelDateTime extends SimpleModel {
 	 * @returns {boolean}
 	 */
 	verifValue(value) {
-		if (!(value instanceof ComhonDateTime)) {
+		if (!(value instanceof ComhonDateTime) || isNaN(value)) {
 			throw new UnexpectedValueTypeException(value, 'ComhonDateTime');
 		}
 		return true;

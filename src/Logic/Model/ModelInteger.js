@@ -40,10 +40,10 @@ class ModelInteger extends SimpleModel {
 		if (Number.isInteger(value)) {
 			return value;
 		}
-		if (isNaN(value)) {
+		const castedValue = Number(value);
+		if (Number.isNaN(castedValue)) {
 			throw new CastStringException(value, 'integer', property);
 		}
-		const castedValue = parseFloat(value);
 		if (!Number.isInteger(castedValue)) {
 			throw new CastStringException(value, 'integer', property);
 		}

@@ -4,12 +4,13 @@ function getDisplayName(WrappedComponent) {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 }
 
-function overridable(WrappedComponent) {
+function overridable(WrappedComponent, edit = false) {
   const toOverrideName = getDisplayName(WrappedComponent)
+  const folder = edit ? 'Edit' : 'Display';
   let overrided = null
-  import(`Overrides/${toOverrideName}/${toOverrideName}`).then((module) => {
+  import(`Overrides/${folder}/${toOverrideName}/${toOverrideName}`).then((module) => {
     overrided = module.default
-  }).catch((reason) => {
+  }).catch(() => {
     // do nothing
   })
 

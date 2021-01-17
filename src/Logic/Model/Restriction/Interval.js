@@ -88,8 +88,15 @@ class Interval extends Restriction {
 			}
 			matches[2] = matches[2].trim();
 			matches[3] = matches[3].trim();
+			if (matches[2] === 'now') {
+				matches[2] = Date.now();
+			}
+			if (matches[3] === 'now') {
+				matches[3] = Date.now();
+			}
 			matches[2] = matches[2] === '' ? null : new Date(matches[2]);
 			matches[3] = matches[3] === '' ? null : new Date(matches[3]);
+			
 		} else {
 			throw new NotSupportedModelIntervalException(model);
 		}
@@ -107,28 +114,28 @@ class Interval extends Restriction {
 	/**
 	 * verify if interval is left closed
 	 */
-	_isLeftClosed() {
+	isLeftClosed() {
 		return this.#isLeftClosed;
 	}
 
 	/**
-	 * verify if interval is left closed
+	 * get left end point
 	 */
-	_getLeftEndPoint() {
+	getLeftEndPoint() {
 		return this.#leftEndPoint;
 	}
 
 	/**
 	 * verify if interval is left closed
 	 */
-	_isRightClosed() {
+	isRightClosed() {
 		return this.#isRightClosed;
 	}
 
 	/**
-	 * verify if interval is left closed
+	 * get right end point
 	 */
-	_getRightEndPoint() {
+	getRightEndPoint() {
 		return this.#rightEndPoint;
 	}
 

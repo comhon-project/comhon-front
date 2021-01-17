@@ -41,10 +41,11 @@ class ModelFloat extends SimpleModel {
 		if (typeof value === 'number') {
 			return value;
 		}
-		if (isNaN(value)) {
+		const castedValue = Number(value);
+		if (Number.isNaN(castedValue)) {
 			throw new CastStringException(value, 'float', property);
 		}
-		return parseFloat(value);
+		return castedValue;
 	}
 
 	/**

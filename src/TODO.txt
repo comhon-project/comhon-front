@@ -1,0 +1,4 @@
+add  button to delete value from array an object
+
+test conflict and depends restrictions
+and add validate object when set property
