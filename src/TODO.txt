@@ -1,4 +1,3 @@
-add  button to delete value from array an object
-
-test conflict and depends restrictions
-and add validate object when set property
+update object collection (not main) when update id (delete or update id), and call refresh.
+when delete object value, remove nested objects from object collection, and call refresh.
+verify if id already exists in object collection (main or not) when set id

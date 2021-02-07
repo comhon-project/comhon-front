@@ -2,12 +2,13 @@ import React from 'react';
 import './CcStringEdit.css';
 import overridable from 'DesignSystem/overridable';
 import CcError from 'DesignSystem/Display/CcError/CcError';
-import CcEnumEdit from '../CcEnumEdit/CcEnumEdit';
+import CcEnumEdit from 'DesignSystem/Edit/CcEnumEdit/CcEnumEdit';
 import Enum from 'Logic/Model/Restriction/Enum';
 
 class CcStringEdit extends React.Component {
 
   #enum;
+  timer = null;
 
   constructor(props) {
     super(props);
@@ -39,13 +40,37 @@ class CcStringEdit extends React.Component {
   }
 
   setValue(event) {
+    const value = event.target.value;
+    this.props.delay ? this.setValueAsync(value, this.props.delay) : this.setValueSync(value);
+  }
+
+  setValueSync(value) {
     try {
       this.setState({
-        value: event.target.value,
+        value: value,
         error: null
       });
       if (this.props.setValue) {
-        this.props.setValue(event.target.value, this.props.valueKey);
+        this.props.setValue(value, this.props.valueKey);
+      }
+    } catch (error) {
+      this.setState({
+        error: error
+      });
+    }
+  }
+
+  async setValueAsync(value, delay) {
+    try {
+      this.setState({
+        value: value,
+        error: null
+      });
+      if (this.props.setValue) {
+        clearTimeout(this.timer);
+        this.timer = setTimeout(() => {
+          this.props.setValue(value, this.props.valueKey);
+        }, delay);
       }
     } catch (error) {
       this.setState({

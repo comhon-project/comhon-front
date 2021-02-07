@@ -10,8 +10,9 @@ import CcPercentageEdit from 'DesignSystem/Edit/CcPercentageEdit/CcPercentageEdi
 import CcBooleanEdit from 'DesignSystem/Edit/CcBooleanEdit/CcBooleanEdit';
 import CcDateTimeEdit from 'DesignSystem/Edit/CcDateTimeEdit/CcDateTimeEdit';
 import CcForeignEdit from 'DesignSystem/Edit/CcForeignEdit/CcForeignEdit';
-import CcNullAbleEdit from '../CcNullAbleEdit/CcNullAbleEdit';
-import CcDeletableEdit from '../CcDeletableEdit/CcDeletableEdit';
+import CcNullAbleEdit from 'DesignSystem/Edit/CcNullAbleEdit/CcNullAbleEdit';
+import CcDeletableEdit from 'DesignSystem/Edit/CcDeletableEdit/CcDeletableEdit';
+import CcForeignObjectEdit from 'DesignSystem/Edit/CcForeignObjectEdit/CcForeignObjectEdit';
 
 class ComhonComponentEdit extends React.Component {
 
@@ -32,7 +33,9 @@ class ComhonComponentEdit extends React.Component {
       case 'ModelForeign':
         return <CcForeignEdit {...this.props}/>;
       case 'Model':
-        return <CcObjectEdit {...this.props}/>;
+        return this.props.isForeign
+          ? <CcForeignObjectEdit {...this.props}/>
+          : <CcObjectEdit {...this.props}/>;
       case 'ModelArray':
         return <CcArrayEdit {...this.props}/>;
       case 'integer':

@@ -4,7 +4,7 @@ import overridable from 'DesignSystem/overridable';
 import Interval from 'Logic/Model/Restriction/Interval';
 import ModelInteger from 'Logic/Model/ModelInteger';
 import Enum from 'Logic/Model/Restriction/Enum';
-import CcEnumEdit from '../CcEnumEdit/CcEnumEdit';
+import CcEnumEdit from 'DesignSystem/Edit/CcEnumEdit/CcEnumEdit';
 import CcError from 'DesignSystem/Display/CcError/CcError';
 
 
@@ -83,14 +83,37 @@ class CcNumberEdit extends React.Component {
   }
 
   setValue(event) {
+    const value = Number(event.target.value);
+    this.props.delay ? this.setValueAsync(value, this.props.delay) : this.setValueSync(value);
+  }
+
+  setValueSync(value) {
     try {
-      const castedValue = Number(event.target.value);
       this.setState({
-        value: castedValue,
+        value: value,
         error: null
       });
       if (this.props.setValue) {
-        this.props.setValue(castedValue, this.props.valueKey);
+        this.props.setValue(value, this.props.valueKey);
+      }
+    } catch (error) {
+      this.setState({
+        error: error
+      });
+    }
+  }
+
+  async setValueAsync(value, delay) {
+    try {
+      this.setState({
+        value: value,
+        error: null
+      });
+      if (this.props.setValue) {
+        clearTimeout(this.timer);
+        this.timer = setTimeout(() => {
+          this.props.setValue(value, this.props.valueKey);
+        }, delay);
       }
     } catch (error) {
       this.setState({

@@ -157,9 +157,20 @@ class CcArrayEdit extends React.Component {
     const isComplex = !object.getModel().isContainedModelSimple();
     const isAssociative = object.getModel().isAssociative();
     const list = [];
+    const map = new Map();
     
     for (const [key, value] of object) {
-      const componentKey = isComplex && value ? value.getOid() : --this.#currentKey;
+      let componentKey;
+      if (isComplex && value) {
+        if (map.has(value.getOid())) {
+          componentKey = --this.#currentKey;
+        } else {
+          componentKey = value.getOid();
+          map.set(value.getOid(), null);
+        }
+      } else {
+        componentKey = --this.#currentKey;
+      }
       
       list.push(
         <div key={componentKey}>

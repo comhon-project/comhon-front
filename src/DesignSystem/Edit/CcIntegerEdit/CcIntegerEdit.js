@@ -1,7 +1,7 @@
 import React from 'react';
 import './CcIntegerEdit.css';
 import overridable from 'DesignSystem/overridable';
-import CcNumberEdit from '../CcNumberEdit/CcNumberEdit';
+import CcNumberEdit from 'DesignSystem/Edit/CcNumberEdit/CcNumberEdit';
 
 class CcIntegerEdit extends React.Component {
 

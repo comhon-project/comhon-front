@@ -2,7 +2,7 @@ import React from 'react';
 import './CcDeletableEdit.css';
 import overridable from 'DesignSystem/overridable';
 import CcButtonX from 'DesignSystem/Display/CcButtonX/CcButtonX';
-import ComhonComponentEdit from '../ComhonComponentEdit/ComhonComponentEdit';
+import ComhonComponentEdit from 'DesignSystem/Edit/ComhonComponentEdit/ComhonComponentEdit';
 import SimpleModel from 'Logic/Model/SimpleModel';
 import AbstractComhonObject from 'Logic/Object/AbstractComhonObject';
 import ComhonArray from 'Logic/Object/ComhonArray';

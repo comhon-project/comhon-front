@@ -29,15 +29,6 @@ class ObjectCollection {
 	}
 
 	/**
-	 * get array map that store all objects by model name and by id
-	 *
-	 * @returns {ComhonObject[][]}
-	 */
-	getMap() {
-		return this.#map;
-	}
-
-	/**
 	 * get comhon object with specified model name (if exists in ObjectCollection)
 	 *
 	 * @param {string|integer} id
@@ -133,6 +124,25 @@ class ObjectCollection {
 		}
 
 		return success;
+	}
+
+	/**
+	 * get iterator that contain stored models keys
+	 *
+	 * @returns {Iterator}
+	 */
+	getModelKeysIterator() {
+		return this.#map.keys();
+	}
+
+	/**
+	 * get iterator that contain stored objects according given models keys
+	 *
+	 * @param {string} modelKey
+	 * @returns {Iterator|null} null if model key doesn't exist
+	 */
+	getObjectsIterator(modelKey) {
+		return this.#map.has(modelKey) ? this.#map.get(modelKey).values() : null;
 	}
 
 	/**

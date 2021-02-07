@@ -144,9 +144,9 @@ class ObjectCollectionInterfacer {
 	async getNotReferencedObjects() {
 		const notReferencedObjects = [];
 
-		for (const modelNameAndObjects of this.#newForeignObjectCollection.getMap()) {
-			for (const [id, object] of modelNameAndObjects[1]) {
-				if (!this.#newObjectCollection.hasObject(id, object.getModel()) && !object.getModel().isMain() && await !object.getModel().isRequestable()) {
+		for (const key of this.#newForeignObjectCollection.getModelKeysIterator()) {
+			for (const object of this.#newForeignObjectCollection.getObjectsIterator(key)) {
+				if (!this.#newObjectCollection.hasObject(object.getId(), object.getModel()) && !object.getModel().isMain() && await !object.getModel().isRequestable()) {
 					notReferencedObjects.push(object);
 				}
 			}

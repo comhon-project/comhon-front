@@ -28,9 +28,12 @@ class CcObjectEdit extends React.Component {
     this.state.error = this.validate();
 
     if (this.props.isRoot === true || this.props.isIsolated === true) {
+      console.log('----isIsolated------ '+this.state.object.getId());
       this.#objectCollection = ObjectCollectionBuilder.build(this.state.object);
       this.#refresh = this.refresh;
+      this.#refresh = this.#refresh.bind(this);
     } else {
+      console.log('---NOT-isIsolated------ '+this.state.object.getId());
       this.#objectCollection = this.props.objectCollection;
       this.#refresh = this.props.refresh;
     }
@@ -161,33 +164,77 @@ class CcObjectEdit extends React.Component {
   }
 
   setPropertyValue(value, propertyName) {
-    const refresh = !this.state.object.hasValue(propertyName);
-    this.state.object.setValue(propertyName, value);
-
+    const isId = this.state.object.getModel().getProperty(propertyName).isId();
+    const refresh = !this.state.object.hasValue(propertyName) || isId;
+    
+    if (isId) {
+      this.#objectCollection.removeObject(this.state.object, false);
+    }
+    try {
+      this.state.object.setValue(propertyName, value);
+    } finally {
+      if (isId) {
+        this.#objectCollection.addObject(this.state.object, false);
+      }
+    }
     if (refresh) {
-      const error = this.validate();
-      if (this.state.error !== error) {
-        this.setState({
-          error: error
-        });
+      if (isId) {
+        this.#refresh(this.state.object.getModel().isMain());
+      } else {
+        const error = this.validate();
+        if (this.state.error !== error) {
+          this.setState({
+            error: error
+          });
+        }
       }
     }
   }
 
   unsetPropertyValue(propertyName) {
-    this.state.object.unsetValue(propertyName);
-    this.state.ccValues.delete(propertyName);
-
-    this.setState({
-      error: this.validate()
-    });
+    const isId = this.state.object.getModel().getProperty(propertyName).isId();
+    if (isId) {
+      this.#objectCollection.removeObject(this.state.object, false);
+    }
+    try {
+      this.state.object.unsetValue(propertyName);
+      this.state.ccValues.delete(propertyName);
+    } catch (error) {
+      if (isId) {
+        this.#objectCollection.addObject(this.state.object, false);
+      }
+      throw error;
+    }
+    
+    if (isId) {
+      this.#refresh(this.state.object.getModel().isMain());
+    } else {
+      this.setState({
+        error: this.validate()
+      });
+    }
   }
 
-  refresh() {
-    this.setState({object: this.state.object});
+  refresh(refreshRoot = false) {
+    console.log('----refresh------ '+this.state.object.getId());
+    if (refreshRoot && this.props.refresh) {
+      this.props.refresh(refreshRoot);
+    } else  {
+      this.forceUpdate();
+      /*for (const [propertyName, ccValue] of this.state.ccValues) {
+        const property = this.state.object.getModel().getProperty(propertyName);
+        if (!property.isUniqueModelSimple()) {
+          console.log(propertyName);
+          this.state.ccValues.set(property.getName(), this.getValueComponent(this.state.object, property.getName()));
+        }
+      }*/
+    }
   }
 
   render() {
+    console.log('----render------ '+this.state.object.getId());
+    console.log(this.props.isRoot);
+    console.log(this.props.isIsolated);
     // TODO display inheritance and handle cast
     if (!this.state.initialized) {
       return <CcLoading/>
@@ -196,14 +243,19 @@ class CcObjectEdit extends React.Component {
     for (const keyAndValue of this.state.ccValues) {
       list.push(keyAndValue[1]);
     }
+    let error = this.state.error;
+    try {
+      this.#objectCollection.addObject(this.state.object);
+    } catch (e) {
+      error = e;
+    }
+
     return (
-      this.props.isForeign
-        ? <span>{this.state.object.getId()}...</span>
-        : <div className="cce-object">
-            {list}
-            {this.state.error ? <CcError error={this.state.error}/> : null}
-            {this.getValuesToAddComponnent()}
-          </div>
+      <div className="cce-object">
+        {list}
+        {error ? <CcError error={error}/> : null}
+        {this.getValuesToAddComponnent()}
+      </div>
     );
   }
 }

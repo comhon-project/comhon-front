@@ -139,11 +139,6 @@ class AbstractComhonObject {
 		if (flagAsUpdated) {
 			this.#updatedValues.set(name, null);
 			this.#isUpdated = true;
-		} else if (this.#updatedValues.has(name)) {
-			this.#updatedValues.delete(name);
-			if (this.#updatedValues.size === 0) {
-				this.#isUpdated = false;
-			}
 		}
 	}
 
@@ -289,9 +284,9 @@ class AbstractComhonObject {
 	}
 
 	/**
-	 * get associative array that reference names of updated values
+	 * get associative array that reference names of values that are flagged as updated
 	 *
-	 * @returns {Map} each key is a property name of an updated value
+	 * @returns {Map} each key is a property name of a value that is flagged as updated
 	 */
 	getUpdatedValues() {
 		return this.#updatedValues;
@@ -481,6 +476,24 @@ class AbstractComhonObject {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * flag value according given updated status
+	 *
+	 * @param {string} name
+	 * @param {boolean} isUpdated
+	 */
+	forceValueStatus(name, isUpdated) {
+		if (isUpdated) {
+			this.#isUpdated = true;
+			this.#updatedValues.set(name, null);
+		} else {
+			this.#updatedValues.delete(name);
+			if (this.#updatedValues.size === 0) {
+				this.#isUpdated = false;
+			}
+		}
 	}
 
 	/**

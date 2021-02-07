@@ -1,7 +1,7 @@
 import React from 'react';
 import './CcNullAbleEdit.css';
 import overridable from 'DesignSystem/overridable';
-import ComhonComponentEdit from '../ComhonComponentEdit/ComhonComponentEdit';
+import ComhonComponentEdit from 'DesignSystem/Edit/ComhonComponentEdit/ComhonComponentEdit';
 import CcButtonActive from 'DesignSystem/Display/CcButtonActive/CcButtonActive';
 import ComhonException from 'Logic/Exception/ComhonException';
 import ComhonArray from 'Logic/Object/ComhonArray';
@@ -92,19 +92,16 @@ class CcNullAbleEdit extends React.Component {
     if (!this.state.isInitialized) {
       return <CcLoading/>;
     }
-    if (this.state.isNull) {
-      return (
-        <CcButtonActive isActivated={this.state.isNull} onClick={this.toggle}>
-          null
-        </CcButtonActive>
-      );
-    }
-    let before = null;
-    let after = null;
     const nullButton = <CcButtonActive isActivated={this.state.isNull} onClick={this.toggle}>
       null
     </CcButtonActive>
 
+    if (this.state.isNull) {
+      return nullButton;
+    }
+
+    let before = null;
+    let after = null;
     if (
       this.#model instanceof SimpleModel 
       || (

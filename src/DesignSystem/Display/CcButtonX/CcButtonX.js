@@ -1,7 +1,7 @@
 import React from 'react';
 import './CcButtonX.css';
 import overridable from 'DesignSystem/overridable';
-import CcButton from '../CcButton/CcButton';
+import CcButton from 'DesignSystem/Display/CcButton/CcButton';
 
 function CcButtonX(props) {
   return (

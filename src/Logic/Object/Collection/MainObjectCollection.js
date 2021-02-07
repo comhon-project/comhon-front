@@ -13,15 +13,6 @@ import ComhonException from 'Logic/Exception/ComhonException';
 class MainObjectCollection extends ObjectCollection {
 
 	/**
-	 * function desactivated for MainObjectCollection
-	 *
-	 * @throws {ComhonException}
-	 */
-	getMap() {
-		throw new Error('function can\'t be called from MainObjectCollection');
-	}
-
-	/**
 	 * add object with mainModel (if not already added)
 	 *
 	 * @param {ComhonObject} object

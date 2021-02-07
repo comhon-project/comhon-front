@@ -2,9 +2,9 @@ import React from 'react';
 import './CcArrayKeyValueEdit.css';
 import overridable from 'DesignSystem/overridable';
 import CcError from 'DesignSystem/Display/CcError/CcError';
-import CcStringEdit from '../CcStringEdit/CcStringEdit';
+import CcStringEdit from 'DesignSystem/Edit/CcStringEdit/CcStringEdit';
 import CcButtonCheck from 'DesignSystem/Display/CcButtonCheck/CcButtonCheck';
-import ComhonComponentEdit from '../ComhonComponentEdit/ComhonComponentEdit';
+import ComhonComponentEdit from 'DesignSystem/Edit/ComhonComponentEdit/ComhonComponentEdit';
 import CcProperty from 'DesignSystem/Display/CcProperty/CcProperty';
 
 class CcArrayKeyValueEdit extends React.Component {
