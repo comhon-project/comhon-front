@@ -30,7 +30,7 @@ class CcForeignLocalObjectEdit extends React.Component {
 
   setValue(event) {
     if (event.target.key !== this.invalidKey) {
-      const value = this.props.model.getIdProperties().length === 1
+      const value = this.props.model.hasUniqueIdProperty() && this.props.model.getUniqueIdProperty().getLoadedModel().castValue
         ? this.props.model.getUniqueIdProperty().getLoadedModel().castValue(event.target.value)
         : event.target.value;
       
